@@ -43,7 +43,7 @@ function genProtoSchema () {
 }
 
 function convert (ver, path) {
-  process.chdir(path || join(__dirname, '../../data/bedrock/' + ver))
+  process.chdir(path || join(__dirname, '../../data/pc/' + ver))
   const version = genProtoSchema()
   try { fs.mkdirSync(`../${version}`) } catch {}
   fs.writeFileSync(`../${version}/protocol.json`, JSON.stringify({ types: getJSON('./proto.json') }, null, 2))
@@ -53,7 +53,7 @@ function convert (ver, path) {
 }
 
 function validate (ver, path) {
-  process.chdir(path || join(__dirname, '../../data/bedrock/' + ver))
+  process.chdir(path || join(__dirname, '../../data/pc/' + ver))
   console.log(process.cwd())
   const version = genProtoSchema()
 
@@ -74,11 +74,12 @@ function validate (ver, path) {
 }
 
 function all (fn) {
-  const versions = require('../../data/dataPaths.json').bedrock
+  const versions = require('../../data/dataPaths.json').pc
   for (const versionId in versions) {
-    console.log('⏳', fn.name, 'protocol for bedrock', versionId)
+    console.log('WAIT', fn.name, 'protocol for pc', versionId)
     const ver = versions[versionId]
     if (ver.proto) {
+      //console.log('asd')
       fn(versionId, join(__dirname, '../../data/' + ver.proto))
     }
   }
