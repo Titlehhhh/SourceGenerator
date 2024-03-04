@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,62 +44,126 @@ namespace SourceGenerator.ProtoDefTypes
 		};
 	}
 
-	public class PSwitch
+	public class ProtodefType
 	{
-		public string CompareTo { get; set; }
-		public string? CompareToValue { get; set; }
+		private JToken _value;
 
-		public IEnumerable<Field> Fields { get; set; }
+		public ProtodefType(JToken value)
+		{
+			_value = value;
+		}
 
-		public string? Default { get; set; }
-	}
-	public class Option
-	{
-		public PType Type { get; set; }
-	}
-	public class PContainer : Collection<Field>
-	{
-		
+		public override string ToString()
+		{
+			return _value.ToString();
+		}
 	}
 
-	public class PArray
+	public class ProtodefSwitch : ProtodefType
 	{
-		public PType Type { get; set; }
-		public PType CountType { get; set; }
+		public ProtodefSwitch(JToken value) : base(value)
+		{
+			if(value is JObject obj)
+			{
+				CompareTo = obj.Value<string>("compareTo");
+				CompareToValue = obj.Value<string>("compareToValue");
+				Default = obj.Value<string>("default");
+				Fields = obj.ToObject<Dictionary<string, object>>();
+			}
+			else
+			{
+				throw new ArgumentException("value is not JObject");
+			}
+		}
+		//TODO path parser
+		public string CompareTo { get; }
 
-		public string? Count { get; set; }
+		public string? CompareToValue { get; }
+
+		public Dictionary<string, object> Fields { get; }
+
+		public string? Default { get; }
 	}
-	public class PType
+
+	public class ProtodefContainer : ReadOnlyCollection<ProtodefField>, IEnumerable<KeyValuePair<string, ProtodefType?>>, IEnumerable
 	{
+		public ProtodefContainer(IList<ProtodefField> list) : base(list)
+		{
+		}
 
+		IEnumerator<KeyValuePair<string, ProtodefType?>> IEnumerable<KeyValuePair<string, ProtodefType?>>.GetEnumerator()
+		{
+			throw new NotImplementedException();
+		}
 	}
-	public class Field
+
+	public class ProtodefArray : ProtodefType
+	{
+		public ProtodefArray(JToken value) : base(value)
+		{
+		}
+
+
+		public ProtodefType Type { get; }
+		public ProtodefType CountType { get; }
+		public string? Count { get; }
+	}
+
+	public class ProtodefField
 	{
 		public string Name { get; set; }
-		public PType Type { get; set; }
+		public ProtodefType Type { get; set; }
 	}
 
-	public class PBuffer
+	public class ProtodefBuffer : ProtodefType
 	{
-		public PType CountType { get; set; }
-		public string? Count { get; set; }
-		public bool? Rest { get; set; }
+		public ProtodefBuffer(JToken value) : base(value)
+		{
+		}
+
+		public ProtodefType CountType { get; }
+		public string? Count { get; }
+		public bool? Rest { get; }
 	}
 
-	public class BitField : Collection<BitFieldNode>
+	public class ProtodefBitField : ProtodefType, IEnumerable<ProtodefBitFieldNode>, IEnumerable
 	{
-	}
-	public class BitFieldNode
-	{
-		public string Name { get; set; }
-		public int Size { get; set; }
-		public bool Signed { get; set; }
-	}
-	public class Mapper
-	{
+		public ProtodefBitField(JToken value) : base(value)
+		{
+		}
 
+		public IEnumerator<ProtodefBitFieldNode> GetEnumerator()
+		{
+			throw new NotImplementedException();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			throw new NotImplementedException();
+		}
 	}
-	public class PString
+	public class ProtodefBitFieldNode
+	{
+		public ProtodefBitFieldNode(string name, int size, bool signed)
+		{
+			Name = name;
+			Size = size;
+			Signed = signed;
+		}
+
+		public string Name { get; }
+		public int Size { get; }
+		public bool Signed { get; }
+	}
+	public class ProtodefMapper : ProtodefType
+	{
+		public ProtodefMapper(JToken value) : base(value)
+		{
+		}
+	}
+
+
+	public class ProtodefString
 	{
 
 	}
