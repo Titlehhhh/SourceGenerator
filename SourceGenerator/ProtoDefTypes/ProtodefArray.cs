@@ -4,6 +4,8 @@ namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefArray : ProtodefType
 	{
+		public override string TypeName => "Array";
+
 		public ProtodefArray(JToken value) : base(value)
 		{
 			if(value is JObject obj)
