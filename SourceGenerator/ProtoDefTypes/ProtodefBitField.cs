@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 namespace SourceGenerator.ProtoDefTypes
 {
 
-	public class ProtodefBitField : ProtodefType, IEnumerable<ProtodefBitFieldNode>, IEnumerable
+	public class ProtodefBitField : ProtodefObject, IEnumerable<ProtodefBitFieldNode>, IEnumerable
 	{
-		public override string TypeName => "Bitfield";
+		//public override string TypeName => "Bitfield";
 		private List<ProtodefBitFieldNode> nodes = new();
-		public ProtodefBitField(JToken value) : base(value)
+		public ProtodefBitField(JToken value) 
 		{
 			if(value is JArray array)
 			{

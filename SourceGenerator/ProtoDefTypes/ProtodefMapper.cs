@@ -2,14 +2,14 @@
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefMapper : ProtodefType
+	public class ProtodefMapper : ProtodefObject
 	{
-		public override string TypeName => "Mapper";
-		public ProtodefMapper(JToken value) : base(value)
+		//public override string TypeName => "Mapper";
+		public ProtodefMapper(JToken value) 
 		{
 			if (value is JObject obj)
 			{
-				Type = new ProtodefType(obj["type"]);
+				//Type = new ProtodefType(obj["type"]);
 
 				foreach (var item in obj.Value<JObject>("mappings"))
 				{
@@ -23,8 +23,8 @@ namespace SourceGenerator.ProtoDefTypes
 			}
 		}
 
-		public ProtodefType Type { get; private set; }
-		public Dictionary<string, ProtodefType> Mappings { get; private set; } = new();
+		public ProtodefObject Type { get; private set; }
+		public Dictionary<string, ProtodefObject> Mappings { get; private set; } = new();
 	}
 
 

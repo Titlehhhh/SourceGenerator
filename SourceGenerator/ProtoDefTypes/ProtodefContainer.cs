@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefContainer : ProtodefType
+	public class ProtodefContainer : ProtodefObject
 	{
-		public override string TypeName => "Container";
+		//public override string TypeName => "Container";
 
 		private readonly List<ProtodefField> fields = new();
-		public ProtodefContainer(JToken value) : base(value)
+		public ProtodefContainer(JToken value) 
 		{
 			if(value is JArray array)
 			{
@@ -24,7 +24,10 @@ namespace SourceGenerator.ProtoDefTypes
 			}
 		}
 
-		
+		public ProtodefContainer(List<ProtodefField> fields)
+		{
+			this.fields = fields;
+		}
 	}
 
 

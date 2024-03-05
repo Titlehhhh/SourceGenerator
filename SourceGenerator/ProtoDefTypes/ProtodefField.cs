@@ -11,7 +11,7 @@ namespace SourceGenerator.ProtoDefTypes
 		}
 
 		public string Name { get; }
-		public ProtodefType Type { get; }
+		public ProtodefObject Type { get; }
 	}
 
 

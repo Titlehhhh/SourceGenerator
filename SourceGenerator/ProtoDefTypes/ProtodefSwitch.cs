@@ -2,11 +2,11 @@
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefSwitch : ProtodefType
+	public class ProtodefSwitch : ProtodefObject
 	{
-		public override string TypeName => "Switch";
+		//public override string TypeName => "Switch";
 
-		public ProtodefSwitch(JToken value) : base(value)
+		public ProtodefSwitch(JToken value) 
 		{
 			if (value is JObject obj)
 			{
@@ -28,7 +28,7 @@ namespace SourceGenerator.ProtoDefTypes
 
 		public string? CompareToValue { get; }
 
-		public Dictionary<string, ProtodefType> Fields { get; } = new();
+		public Dictionary<string, ProtodefObject> Fields { get; } = new();
 
 		public string? Default { get; }
 	}

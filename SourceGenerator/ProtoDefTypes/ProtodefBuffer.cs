@@ -2,10 +2,10 @@
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefBuffer : ProtodefType
+	public class ProtodefBuffer : ProtodefObject
 	{
-		public override string TypeName => "Cuffer";
-		public ProtodefBuffer(JToken value) : base(value)
+		//public override string TypeName => "Cuffer";
+		public ProtodefBuffer(JToken value)
 		{
 			if (value is JObject obj)
 			{
@@ -19,7 +19,7 @@ namespace SourceGenerator.ProtoDefTypes
 			}
 		}
 
-		public ProtodefType CountType { get; }
+		public ProtodefObject CountType { get; }
 		public string? Count { get; }
 		public bool? Rest { get; }
 	}
