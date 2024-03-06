@@ -1,28 +1,19 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace SourceGenerator.ProtoDefTypes
+﻿namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefSwitch : ProtodefObject
 	{
 		//public override string TypeName => "Switch";
 
-		public ProtodefSwitch(JToken value) 
+
+
+		public ProtodefSwitch(string compareTo, string? compareToValue, Dictionary<string, ProtodefObject> fields, string? @default)
 		{
-			if (value is JObject obj)
-			{
-				CompareTo = obj.Value<string>("compareTo");
-				CompareToValue = obj.Value<string>("compareToValue");
-				Default = obj.Value<string>("default");
-				foreach (var item in obj.Value<JObject>("fields"))
-				{
-					Fields[item.Key] = ProtodefParser.ParseToken(item.Value);
-				}
-			}
-			else
-			{
-				throw new ArgumentException("value is not JObject");
-			}
+			CompareTo = compareTo;
+			CompareToValue = compareToValue;
+			Fields = fields;
+			Default = @default;
 		}
+
 		//TODO path parser
 		public string CompareTo { get; }
 

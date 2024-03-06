@@ -1,22 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using SourceGenerator.ProtoDefTypes;
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 
 internal class Program
 {
 	private static void Main(string[] args)
 	{
-		
-
-		
-
-
 
 
 		using var sr = new StreamReader("protocol.json");
@@ -41,8 +30,8 @@ internal class Program
 
 		foreach (var token in clientPackets)
 		{
-			ProtodefObject type = ProtodefParser.ParseToken(token.Value);
-			packets.Add(type);
+			//ProtodefObject type = ProtodefParser.ParseToken(token.Value);
+			//packets.Add(type);
 		}
 
 

@@ -1,26 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace SourceGenerator.ProtoDefTypes
+﻿namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefMapper : ProtodefObject
 	{
-		//public override string TypeName => "Mapper";
-		public ProtodefMapper(JToken value) 
+		public ProtodefMapper(ProtodefObject type, Dictionary<string, ProtodefObject> mappings)
 		{
-			if (value is JObject obj)
-			{
-				//Type = new ProtodefType(obj["type"]);
-
-				foreach (var item in obj.Value<JObject>("mappings"))
-				{
-					Mappings[item.Key] = ProtodefParser.ParseToken(item.Value);
-				}
-
-			}
-			else
-			{
-				throw new ArgumentException("no object");
-			}
+			Type = type;
+			Mappings = mappings;
 		}
 
 		public ProtodefObject Type { get; private set; }

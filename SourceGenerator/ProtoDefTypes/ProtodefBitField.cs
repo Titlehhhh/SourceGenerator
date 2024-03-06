@@ -1,11 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace SourceGenerator.ProtoDefTypes
 {
@@ -14,19 +7,10 @@ namespace SourceGenerator.ProtoDefTypes
 	{
 		//public override string TypeName => "Bitfield";
 		private List<ProtodefBitFieldNode> nodes = new();
-		public ProtodefBitField(JToken value) 
+
+		public ProtodefBitField(List<ProtodefBitFieldNode> nodes)
 		{
-			if(value is JArray array)
-			{
-				foreach(JObject obj in array)
-				{
-					nodes.Add(new ProtodefBitFieldNode(obj));
-				}
-			}
-			else
-			{
-				throw new ArgumentException("no array");
-			}
+			this.nodes = nodes;
 		}
 
 		public IEnumerator<ProtodefBitFieldNode> GetEnumerator()

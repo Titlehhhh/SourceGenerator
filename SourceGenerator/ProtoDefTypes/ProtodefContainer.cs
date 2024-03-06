@@ -1,30 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections;
-using System.Collections.ObjectModel;
-
-namespace SourceGenerator.ProtoDefTypes
+﻿namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefContainer : ProtodefObject
 	{
 		//public override string TypeName => "Container";
 
-		private readonly List<ProtodefField> fields = new();
-		public ProtodefContainer(JToken value) 
-		{
-			if(value is JArray array)
-			{
-				foreach(JObject item in array)
-				{
-					fields.Add(new ProtodefField(item));
-				}
-			}
-			else
-			{
-				throw new ArgumentException("no array");
-			}
-		}
+		private readonly List<ProtodefContainerField> fields = new();
 
-		public ProtodefContainer(List<ProtodefField> fields)
+
+		public ProtodefContainer(List<ProtodefContainerField> fields)
 		{
 			this.fields = fields;
 		}

@@ -4,19 +4,14 @@ namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefBuffer : ProtodefObject
 	{
-		//public override string TypeName => "Cuffer";
-		public ProtodefBuffer(JToken value)
+		
+		
+
+		public ProtodefBuffer(ProtodefObject countType, string? count, bool? rest)
 		{
-			if (value is JObject obj)
-			{
-				CountType = ProtodefParser.ParseToken(obj["countType"]);
-				Count = obj.Value<string>("count");
-				Rest = obj.Value<bool>("rest");
-			}
-			else
-			{
-				throw new ArgumentException("no object");
-			}
+			CountType = countType;
+			Count = count;
+			Rest = rest;
 		}
 
 		public ProtodefObject CountType { get; }

@@ -4,10 +4,11 @@ namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefObject
 	{
-		
+
 
 		private JToken _value;
 
+		
 		
 
 		public override string ToString()
