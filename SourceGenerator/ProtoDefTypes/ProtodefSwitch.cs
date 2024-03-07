@@ -1,12 +1,10 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefSwitch : ProtodefObject
+	public class ProtodefSwitch : ProtodefType
 	{
-		//public override string TypeName => "Switch";
+		
 
-
-
-		public ProtodefSwitch(string compareTo, string? compareToValue, Dictionary<string, ProtodefObject> fields, string? @default)
+		public ProtodefSwitch(string compareTo, string? compareToValue, Dictionary<string, ProtodefType> fields, string? @default)
 		{
 			CompareTo = compareTo;
 			CompareToValue = compareToValue;
@@ -19,7 +17,7 @@
 
 		public string? CompareToValue { get; }
 
-		public Dictionary<string, ProtodefObject> Fields { get; } = new();
+		public Dictionary<string, ProtodefType> Fields { get; } = new();
 
 		public string? Default { get; }
 	}

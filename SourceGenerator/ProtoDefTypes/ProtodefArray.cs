@@ -2,17 +2,17 @@
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefArray : ProtodefObject
+	public class ProtodefArray : ProtodefType
 	{
-		public ProtodefArray(ProtodefObject type, ProtodefObject countType, string? count)
+		public ProtodefArray(ProtodefType type, ProtodefType countType, string? count)
 		{
 			Type = type;
 			CountType = countType;
 			Count = count;
 		}
 
-		public ProtodefObject Type { get; }
-		public ProtodefObject CountType { get; }
+		public ProtodefType Type { get; }
+		public ProtodefType CountType { get; }
 		public string? Count { get; }
 	}
 

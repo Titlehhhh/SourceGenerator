@@ -3,7 +3,7 @@
 namespace SourceGenerator.ProtoDefTypes
 {
 
-	public class ProtodefBitField : ProtodefObject, IEnumerable<ProtodefBitFieldNode>, IEnumerable
+	public class ProtodefBitField : ProtodefType, IEnumerable<ProtodefBitFieldNode>, IEnumerable
 	{
 		//public override string TypeName => "Bitfield";
 		private List<ProtodefBitFieldNode> nodes = new();

@@ -26,7 +26,7 @@ internal class Program
 
 		JObject clientPackets = json.play.toClient.types;
 
-		List<ProtodefObject> packets = new();
+		List<ProtodefType> packets = new();
 
 		foreach (var token in clientPackets)
 		{

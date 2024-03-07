@@ -2,19 +2,19 @@
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefBuffer : ProtodefObject
+	public class ProtodefBuffer : ProtodefType
 	{
 		
 		
 
-		public ProtodefBuffer(ProtodefObject countType, string? count, bool? rest)
+		public ProtodefBuffer(ProtodefType countType, string? count, bool? rest)
 		{
 			CountType = countType;
 			Count = count;
 			Rest = rest;
 		}
 
-		public ProtodefObject CountType { get; }
+		public ProtodefType CountType { get; }
 		public string? Count { get; }
 		public bool? Rest { get; }
 	}

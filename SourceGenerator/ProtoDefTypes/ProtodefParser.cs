@@ -6,10 +6,13 @@ namespace SourceGenerator.ProtoDefTypes
 	{
 		public List<string> nativeTypes = new();
 
+		public ProtodefParser(string protocol_json)
+		{
+
+		}
 
 
-
-		public ProtodefObject Parse(JToken token)
+		public ProtodefType Parse(JToken token)
 		{
 			if (token.Type == JTokenType.String)
 			{
@@ -30,7 +33,8 @@ namespace SourceGenerator.ProtoDefTypes
 					"mapper" => ParseMapper(last),
 					"buffer" => ParseBuffer(last),
 					"array" => ParseArray(last),
-					_ => throw new Exception($"Unknow type - [{typeName}]")
+					"option" => ParseOption(last),
+					_ => ParseOther(typeName, last)
 
 				};
 			}
@@ -40,7 +44,24 @@ namespace SourceGenerator.ProtoDefTypes
 			}
 		}
 
+		private ProtodefOption ParseOption(JToken token)
+		{
+			if (token is JValue val)
+			{
+				if (val.Type == JTokenType.String)
+				{
+					return new ProtodefOption(Parse(val.ToString()));
+				}
+			}
 
+			throw new Exception("no value");
+
+		}
+
+		private ProtodefType ParseOther(string name, JToken token)
+		{
+			return null;
+		}
 		private ProtodefContainer ParseContainer(JToken token)
 		{
 			if (token is JArray array)
@@ -72,7 +93,7 @@ namespace SourceGenerator.ProtoDefTypes
 				var @default = obj.Value<string>("default");
 
 
-				var fields = new Dictionary<string, ProtodefObject>();
+				var fields = new Dictionary<string, ProtodefType>();
 				foreach (var item in obj.Value<JObject>("fields"))
 				{
 					fields[item.Key] = this.Parse(item.Value);
@@ -109,7 +130,7 @@ namespace SourceGenerator.ProtoDefTypes
 			if (token is JObject obj)
 			{
 				var type = Parse(obj.Value<JToken>("type"));
-				var mappings = new Dictionary<string, ProtodefObject>();
+				var mappings = new Dictionary<string, ProtodefType>();
 				foreach (var item in obj.Value<JObject>("mappings"))
 				{
 					mappings[item.Key] = Parse(item.Value);
@@ -157,6 +178,4 @@ namespace SourceGenerator.ProtoDefTypes
 			}
 		}
 	}
-
-
 }

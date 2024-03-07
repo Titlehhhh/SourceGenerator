@@ -1,15 +1,15 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefMapper : ProtodefObject
+	public class ProtodefMapper : ProtodefType
 	{
-		public ProtodefMapper(ProtodefObject type, Dictionary<string, ProtodefObject> mappings)
+		public ProtodefMapper(ProtodefType type, Dictionary<string, ProtodefType> mappings)
 		{
 			Type = type;
 			Mappings = mappings;
 		}
 
-		public ProtodefObject Type { get; private set; }
-		public Dictionary<string, ProtodefObject> Mappings { get; private set; } = new();
+		public ProtodefType Type { get; private set; }
+		public Dictionary<string, ProtodefType> Mappings { get; private set; } = new();
 	}
 
 

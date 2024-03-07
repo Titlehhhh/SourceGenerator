@@ -2,7 +2,7 @@
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefObject
+	public class ProtodefType
 	{
 
 
@@ -17,11 +17,7 @@ namespace SourceGenerator.ProtoDefTypes
 		}
 	}
 
-	public class ProtodefType
-	{
-		public bool IsNative { get; }
-
-	}
+	
 
 
 }

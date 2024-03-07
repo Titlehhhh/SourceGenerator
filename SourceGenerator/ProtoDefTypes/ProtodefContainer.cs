@@ -1,6 +1,6 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefContainer : ProtodefObject
+	public class ProtodefContainer : ProtodefType
 	{
 		//public override string TypeName => "Container";
 

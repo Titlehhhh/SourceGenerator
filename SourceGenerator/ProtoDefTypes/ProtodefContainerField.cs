@@ -4,7 +4,7 @@
 	{
 
 
-		public ProtodefContainerField(bool? anon, string? name, ProtodefObject type)
+		public ProtodefContainerField(bool? anon, string? name, ProtodefType type)
 		{
 			Anon = anon;
 			Name = name;
@@ -15,7 +15,7 @@
 
 		public bool? Anon { get; }
 		public string? Name { get; }
-		public ProtodefObject Type { get; }
+		public ProtodefType Type { get; }
 	}
 
 
