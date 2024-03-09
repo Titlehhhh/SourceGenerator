@@ -4,7 +4,7 @@ namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefArray : ProtodefType
 	{
-		public ProtodefArray(ProtodefType type, ProtodefType countType, string? count)
+		public ProtodefArray(ProtodefType type, ProtodefType countType, string? count, JToken token) : base(token)
 		{
 			Type = type;
 			CountType = countType;

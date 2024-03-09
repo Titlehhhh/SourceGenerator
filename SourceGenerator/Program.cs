@@ -11,32 +11,15 @@ internal class Program
 		using var sr = new StreamReader("protocol.json");
 
 
-		dynamic json = JObject.Parse(sr.ReadToEnd());
+		string json = sr.ReadToEnd();
 
 
-		List<string> nativeTypes = new();
+		ProtodefParser parser = new(json);
 
-		foreach (JProperty item in json.types)
-		{
-			if (item.Value.ToString() == "native")
-			{
-				nativeTypes.Add(item.Name);
-			}
-		}
-
-		JObject clientPackets = json.play.toClient.types;
-
-		List<ProtodefType> packets = new();
-
-		foreach (var token in clientPackets)
-		{
-			//ProtodefObject type = ProtodefParser.ParseToken(token.Value);
-			//packets.Add(type);
-		}
+		
 
 
 
-
-		Console.ReadLine();
+		//Console.ReadLine();
 	}
 }

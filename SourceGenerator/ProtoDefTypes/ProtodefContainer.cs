@@ -1,4 +1,6 @@
-﻿namespace SourceGenerator.ProtoDefTypes
+﻿using Newtonsoft.Json.Linq;
+
+namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefContainer : ProtodefType
 	{
@@ -7,7 +9,7 @@
 		private readonly List<ProtodefContainerField> fields = new();
 
 
-		public ProtodefContainer(List<ProtodefContainerField> fields)
+		public ProtodefContainer(List<ProtodefContainerField> fields, JToken token) : base(token)
 		{
 			this.fields = fields;
 		}

@@ -8,7 +8,10 @@ namespace SourceGenerator.ProtoDefTypes
 
 		private JToken _value;
 
-		
+		public ProtodefType(JToken token)
+		{
+			_value = token;
+		}
 		
 
 		public override string ToString()

@@ -6,18 +6,67 @@ namespace SourceGenerator.ProtoDefTypes
 	{
 		public List<string> nativeTypes = new();
 
+		public Dictionary<string, ProtodefType> Types { get; } = new ();
+
+		public Dictionary<string, ProtodefType> ToClientPackets { get; } = new();
+
+		public Dictionary<string, ProtodefType> ToServerPackets { get; } = new();
+
+		private readonly JObject _jobj;
+
 		public ProtodefParser(string protocol_json)
 		{
+			_jobj = JObject.Parse(protocol_json);
+
+			foreach(var item in _jobj.Value<JObject>("types"))
+			{
+				Types[item.Key] = Parse(item.Value);
+			}
+
+			foreach(var item in (JObject)_jobj.SelectToken("play.toClient.types"))
+			{
+				if(item.Key.StartsWith("packet_"))
+				{
+					try
+					{
+						ToClientPackets[item.Key] = Parse(item.Value);
+					}
+					catch(Exception ex)
+					{
+						throw new Exception($"Parse toClient packets error. Packet: {item.Key}", ex);
+					}
+					
+				}
+				
+			}
+			foreach(var item in (JObject)_jobj.SelectToken("play.toServer.types"))
+			{
+				if(item.Key.StartsWith("packet_"))
+				{
+					try
+					{
+						ToServerPackets[item.Key] = Parse(item.Value);
+					}
+					catch(Exception ex)
+					{
+						throw new Exception($"Parse toServer packets error. Packet: {item.Key}", ex);
+					}
+				}
+				
+			}
 
 		}
 
 
-		public ProtodefType Parse(JToken token)
+		private ProtodefType Parse(JToken token)
 		{
 			if (token.Type == JTokenType.String)
 			{
-				throw new NotImplementedException();
-				//return new ProtodefType();
+				if(Types.TryGetValue(token.ToString(), out var result))
+				{
+					return result;
+				}
+				return new ProtodefType(token);
 			}
 			else if (token.Type == JTokenType.Array)
 			{
@@ -34,6 +83,7 @@ namespace SourceGenerator.ProtoDefTypes
 					"buffer" => ParseBuffer(last),
 					"array" => ParseArray(last),
 					"option" => ParseOption(last),
+					"pstring" => ParseString(last),
 					_ => ParseOther(typeName, last)
 
 				};
@@ -46,22 +96,19 @@ namespace SourceGenerator.ProtoDefTypes
 
 		private ProtodefOption ParseOption(JToken token)
 		{
-			if (token is JValue val)
-			{
-				if (val.Type == JTokenType.String)
-				{
-					return new ProtodefOption(Parse(val.ToString()));
-				}
-			}
-
-			throw new Exception("no value");
-
+			return new ProtodefOption(Parse(token), token);
 		}
 
 		private ProtodefType ParseOther(string name, JToken token)
 		{
-			return null;
+			throw new Exception("unknown type: "+name);
+			
 		}
+		private ProtodefString ParseString(JToken token)
+		{
+			return new ProtodefString(token);
+		}
+
 		private ProtodefContainer ParseContainer(JToken token)
 		{
 			if (token is JArray array)
@@ -76,7 +123,7 @@ namespace SourceGenerator.ProtoDefTypes
 
 					fields.Add(field);
 				}
-				return new ProtodefContainer(fields);
+				return new ProtodefContainer(fields, token);
 			}
 			else
 			{
@@ -88,18 +135,27 @@ namespace SourceGenerator.ProtoDefTypes
 		{
 			if (token is JObject obj)
 			{
-				var compareTo = obj.Value<string>("compareTo");
-				var compareToValue = obj.Value<string>("compareToValue");
-				var @default = obj.Value<string>("default");
-
-
-				var fields = new Dictionary<string, ProtodefType>();
-				foreach (var item in obj.Value<JObject>("fields"))
+				try
 				{
-					fields[item.Key] = this.Parse(item.Value);
+					var compareTo = obj.Value<string>("compareTo");
+					var compareToValue = obj.Value<string>("compareToValue");
+					var @default = obj.Value<string>("default");
+
+					var fields = new Dictionary<string, ProtodefType>();
+					foreach (var item in obj.Value<JObject>("fields"))
+					{
+						fields[item.Key] = this.Parse(item.Value);
+					}
+
+					return new ProtodefSwitch(compareTo, compareToValue, fields, @default, token);
+				} 
+				catch(Exception ex)
+				{
+					throw;
+					//throw new Exception(token.ToString(),ex);
 				}
 
-				return new ProtodefSwitch(compareTo, compareToValue, fields, @default);
+				
 			}
 			else
 			{
@@ -117,7 +173,7 @@ namespace SourceGenerator.ProtoDefTypes
 				{
 					nodes.Add(new ProtodefBitFieldNode(obj));
 				}
-				return new ProtodefBitField(nodes);
+				return new ProtodefBitField(nodes, token);
 			}
 			else
 			{
@@ -136,7 +192,7 @@ namespace SourceGenerator.ProtoDefTypes
 					mappings[item.Key] = Parse(item.Value);
 				}
 
-				return new ProtodefMapper(type, mappings);
+				return new ProtodefMapper(type, mappings, token);
 
 			}
 			else
@@ -153,7 +209,7 @@ namespace SourceGenerator.ProtoDefTypes
 				var count = obj.Value<string>("count");
 				var rest = obj.Value<bool>("rest");
 
-				return new ProtodefBuffer(countType, count, rest);
+				return new ProtodefBuffer(countType, count, rest, token);
 			}
 			else
 			{
@@ -170,7 +226,7 @@ namespace SourceGenerator.ProtoDefTypes
 				var countType = Parse(obj["countType"]);
 				var count = obj.Value<string>("count");
 
-				return new ProtodefArray(type, countType, count);
+				return new ProtodefArray(type, countType, count, token);
 			}
 			else
 			{

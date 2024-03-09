@@ -7,7 +7,7 @@ namespace SourceGenerator.ProtoDefTypes
 		
 		
 
-		public ProtodefBuffer(ProtodefType countType, string? count, bool? rest)
+		public ProtodefBuffer(ProtodefType countType, string? count, bool? rest, JToken token) : base(token)
 		{
 			CountType = countType;
 			Count = count;
