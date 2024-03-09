@@ -6,17 +6,31 @@ namespace SourceGenerator.ProtoDefTypes
 	{
 
 
-		private JToken _value;
+		public JToken Token { get; }
 
 		public ProtodefType(JToken token)
 		{
-			_value = token;
+			Token = token;
 		}
 		
 
 		public override string ToString()
 		{
-			return _value.ToString();
+			return Token.ToString();
+		}
+	}
+
+	public class ProtodefDefiniteType : ProtodefType
+	{
+		public bool IsNative => Value == "native";
+
+		public string Name { get; }
+		public object Value { get; }
+
+		public ProtodefDefiniteType(string name, object value)
+		{
+			Name = name;
+			Value = value;
 		}
 	}
 

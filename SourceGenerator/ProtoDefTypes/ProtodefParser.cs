@@ -6,7 +6,7 @@ namespace SourceGenerator.ProtoDefTypes
 	{
 		public List<string> nativeTypes = new();
 
-		public Dictionary<string, ProtodefType> Types { get; } = new ();
+		public Dictionary<string, ProtodefDefiniteType> Types { get; } = new ();
 
 		public Dictionary<string, ProtodefType> ToClientPackets { get; } = new();
 
@@ -20,7 +20,15 @@ namespace SourceGenerator.ProtoDefTypes
 
 			foreach(var item in _jobj.Value<JObject>("types"))
 			{
-				Types[item.Key] = Parse(item.Value);
+				try
+				{
+					Types[item.Key] = Parse(item.Value);
+				} 
+				catch(Exception ex)
+				{
+					throw new Exception($"Parse types error. Type: {item.Key}", ex);
+				}
+				
 			}
 
 			foreach(var item in (JObject)_jobj.SelectToken("play.toClient.types"))
@@ -57,6 +65,10 @@ namespace SourceGenerator.ProtoDefTypes
 
 		}
 
+		private ProtodefType GetType(string name)
+		{
+			if()
+		}
 
 		private ProtodefType Parse(JToken token)
 		{
@@ -135,25 +147,19 @@ namespace SourceGenerator.ProtoDefTypes
 		{
 			if (token is JObject obj)
 			{
-				try
-				{
-					var compareTo = obj.Value<string>("compareTo");
-					var compareToValue = obj.Value<string>("compareToValue");
-					var @default = obj.Value<string>("default");
+				
+				var compareTo = obj.Value<string>("compareTo");
+				var compareToValue = obj.Value<string>("compareToValue");
+				var @default = obj.Value<string>("default");
 
-					var fields = new Dictionary<string, ProtodefType>();
-					foreach (var item in obj.Value<JObject>("fields"))
-					{
-						fields[item.Key] = this.Parse(item.Value);
-					}
-
-					return new ProtodefSwitch(compareTo, compareToValue, fields, @default, token);
-				} 
-				catch(Exception ex)
+				var fields = new Dictionary<string, ProtodefType>();
+				foreach (var item in obj.Value<JObject>("fields"))
 				{
-					throw;
-					//throw new Exception(token.ToString(),ex);
+					fields[item.Key] = this.Parse(item.Value);
 				}
+
+				return new ProtodefSwitch(compareTo, compareToValue, fields, @default, token);
+				
 
 				
 			}
