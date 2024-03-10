@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using SourceGenerator;
 using SourceGenerator.ProtoDefTypes;
 
 
@@ -14,11 +14,11 @@ internal class Program
 		string json = sr.ReadToEnd();
 
 
-		ProtodefParser parser = new(json);
-
-		
+		var prot = RustToCsharpConverter.ReadProtocol(json);
 
 
+
+		Console.WriteLine();
 
 		//Console.ReadLine();
 	}

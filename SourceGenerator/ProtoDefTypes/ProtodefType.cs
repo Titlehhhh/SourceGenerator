@@ -12,7 +12,7 @@ namespace SourceGenerator.ProtoDefTypes
 		{
 			Token = token;
 		}
-		
+
 
 		public override string ToString()
 		{
@@ -27,14 +27,14 @@ namespace SourceGenerator.ProtoDefTypes
 		public string Name { get; }
 		public object Value { get; }
 
-		public ProtodefDefiniteType(string name, object value)
+		public ProtodefDefiniteType(string name, object value, JToken token) : base(token)
 		{
 			Name = name;
 			Value = value;
 		}
 	}
 
-	
+
 
 
 }

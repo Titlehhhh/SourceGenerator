@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections;
 
 namespace SourceGenerator.ProtoDefTypes
 {

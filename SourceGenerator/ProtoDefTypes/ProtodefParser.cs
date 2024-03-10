@@ -6,7 +6,7 @@ namespace SourceGenerator.ProtoDefTypes
 	{
 		public List<string> nativeTypes = new();
 
-		public Dictionary<string, ProtodefDefiniteType> Types { get; } = new ();
+		public Dictionary<string, ProtodefDefiniteType> Types { get; } = new();
 
 		public Dictionary<string, ProtodefType> ToClientPackets { get; } = new();
 
@@ -18,63 +18,84 @@ namespace SourceGenerator.ProtoDefTypes
 		{
 			_jobj = JObject.Parse(protocol_json);
 
-			foreach(var item in _jobj.Value<JObject>("types"))
+			foreach (var item in _jobj.Value<JObject>("types"))
 			{
 				try
 				{
-					Types[item.Key] = Parse(item.Value);
-				} 
-				catch(Exception ex)
+					Types[item.Key] = GetType(item.Key);
+				}
+				catch (Exception ex)
 				{
 					throw new Exception($"Parse types error. Type: {item.Key}", ex);
 				}
-				
+
 			}
 
-			foreach(var item in (JObject)_jobj.SelectToken("play.toClient.types"))
+			foreach (var item in (JObject)_jobj.SelectToken("play.toClient.types"))
 			{
-				if(item.Key.StartsWith("packet_"))
+				if (item.Key.StartsWith("packet_"))
 				{
 					try
 					{
 						ToClientPackets[item.Key] = Parse(item.Value);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						throw new Exception($"Parse toClient packets error. Packet: {item.Key}", ex);
 					}
-					
+
 				}
-				
+
 			}
-			foreach(var item in (JObject)_jobj.SelectToken("play.toServer.types"))
+			foreach (var item in (JObject)_jobj.SelectToken("play.toServer.types"))
 			{
-				if(item.Key.StartsWith("packet_"))
+				if (item.Key.StartsWith("packet_"))
 				{
 					try
 					{
 						ToServerPackets[item.Key] = Parse(item.Value);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						throw new Exception($"Parse toServer packets error. Packet: {item.Key}", ex);
 					}
 				}
-				
+
 			}
 
 		}
 
-		private ProtodefType GetType(string name)
+		private ProtodefDefiniteType GetType(string name)
 		{
-			if()
+			if (Types.TryGetValue(name, out var value))
+			{
+				return value;
+			}
+			else
+			{
+				var token = _jobj.SelectToken($"types.{name}");
+
+				if(token is null)
+				{
+					throw new Exception("unknown type " + name);
+				}
+
+				if(token.Type == JTokenType.String)
+				{
+					return new ProtodefDefiniteType(name,token.ToString() , token);
+				}
+
+				return null;
+
+				
+			}
 		}
 
 		private ProtodefType Parse(JToken token)
 		{
 			if (token.Type == JTokenType.String)
 			{
-				if(Types.TryGetValue(token.ToString(), out var result))
+				if (Types.TryGetValue(token.ToString(), out var result))
 				{
 					return result;
 				}
@@ -113,8 +134,8 @@ namespace SourceGenerator.ProtoDefTypes
 
 		private ProtodefType ParseOther(string name, JToken token)
 		{
-			throw new Exception("unknown type: "+name);
-			
+			throw new Exception("unknown type: " + name);
+
 		}
 		private ProtodefString ParseString(JToken token)
 		{
@@ -147,7 +168,7 @@ namespace SourceGenerator.ProtoDefTypes
 		{
 			if (token is JObject obj)
 			{
-				
+
 				var compareTo = obj.Value<string>("compareTo");
 				var compareToValue = obj.Value<string>("compareToValue");
 				var @default = obj.Value<string>("default");
@@ -159,9 +180,9 @@ namespace SourceGenerator.ProtoDefTypes
 				}
 
 				return new ProtodefSwitch(compareTo, compareToValue, fields, @default, token);
-				
 
-				
+
+
 			}
 			else
 			{

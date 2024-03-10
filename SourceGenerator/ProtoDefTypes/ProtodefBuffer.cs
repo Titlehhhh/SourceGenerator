@@ -4,8 +4,8 @@ namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefBuffer : ProtodefType
 	{
-		
-		
+
+
 
 		public ProtodefBuffer(ProtodefType countType, string? count, bool? rest, JToken token) : base(token)
 		{

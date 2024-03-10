@@ -4,7 +4,7 @@ namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefSwitch : ProtodefType
 	{
-		
+
 
 		public ProtodefSwitch(string compareTo, string? compareToValue, Dictionary<string, ProtodefType> fields, string? @default, JToken token) : base(token)
 		{
