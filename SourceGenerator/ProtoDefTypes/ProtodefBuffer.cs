@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace SourceGenerator.ProtoDefTypes
+﻿namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefBuffer : ProtodefType
 	{
 
-
-
-		public ProtodefBuffer(ProtodefType countType, string? count, bool? rest, JToken token) : base(token)
+		public ProtodefBuffer(ProtodefType countType, string? count, bool? rest)
 		{
 			CountType = countType;
 			Count = count;

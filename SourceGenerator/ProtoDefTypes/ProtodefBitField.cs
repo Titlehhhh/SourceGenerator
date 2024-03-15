@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections;
+﻿using System.Collections;
 
 namespace SourceGenerator.ProtoDefTypes
 {
@@ -9,7 +8,7 @@ namespace SourceGenerator.ProtoDefTypes
 		//public override string TypeName => "Bitfield";
 		private List<ProtodefBitFieldNode> nodes = new();
 
-		public ProtodefBitField(List<ProtodefBitFieldNode> nodes, JToken token) : base(token)
+		public ProtodefBitField(List<ProtodefBitFieldNode> nodes)
 		{
 			this.nodes = nodes;
 		}

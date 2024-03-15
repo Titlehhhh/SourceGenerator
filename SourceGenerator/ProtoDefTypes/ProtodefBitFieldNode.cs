@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace SourceGenerator.ProtoDefTypes
+﻿namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefBitFieldNode
 	{

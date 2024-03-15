@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace SourceGenerator.ProtoDefTypes
+﻿namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefArray : ProtodefType
 	{
-		public ProtodefArray(ProtodefType type, ProtodefType countType, string? count, JToken token) : base(token)
+		public ProtodefArray(ProtodefType type, ProtodefType countType, string? count)
 		{
 			Type = type;
 			CountType = countType;

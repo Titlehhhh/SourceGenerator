@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace SourceGenerator.ProtoDefTypes
+﻿namespace SourceGenerator.ProtoDefTypes
 {
 	public class ProtodefMapper : ProtodefType
 	{
-		public ProtodefMapper(ProtodefType type, Dictionary<string, ProtodefType> mappings, JToken token) : base(token)
+		public ProtodefMapper(ProtodefType type, Dictionary<string, ProtodefType> mappings)
 		{
 			Type = type;
 			Mappings = mappings;

@@ -1,5 +1,4 @@
-﻿using SourceGenerator;
-using SourceGenerator.ProtoDefTypes;
+﻿using SourceGenerator.ProtoDefTypes;
 
 
 internal class Program
@@ -14,7 +13,7 @@ internal class Program
 		string json = sr.ReadToEnd();
 
 
-		var prot = RustToCsharpConverter.ReadProtocol(json);
+		var proto = new ProtodefParser(json).Parse();
 
 
 
