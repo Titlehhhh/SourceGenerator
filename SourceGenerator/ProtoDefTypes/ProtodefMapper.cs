@@ -1,6 +1,6 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefMapper : ProtodefType
+	public sealed class ProtodefMapper : ProtodefType
 	{
 		public ProtodefMapper(ProtodefType type, Dictionary<string, ProtodefType> mappings)
 		{

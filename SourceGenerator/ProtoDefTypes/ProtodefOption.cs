@@ -1,6 +1,6 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefOption : ProtodefType
+	public sealed class ProtodefOption : ProtodefType
 	{
 		public ProtodefType Type { get; }
 

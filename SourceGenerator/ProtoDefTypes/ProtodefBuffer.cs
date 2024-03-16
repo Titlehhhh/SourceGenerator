@@ -1,6 +1,6 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefBuffer : ProtodefType
+	public sealed class ProtodefBuffer : ProtodefType
 	{
 
 		public ProtodefBuffer(ProtodefType countType, string? count, bool? rest)

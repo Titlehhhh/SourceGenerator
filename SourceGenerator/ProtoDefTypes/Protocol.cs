@@ -1,13 +1,11 @@
-﻿using System.Text.Json.Serialization;
-
-namespace SourceGenerator.ProtoDefTypes
+﻿namespace SourceGenerator.ProtoDefTypes
 {
 
 	public class Protocol
 	{
 		public Dictionary<string, Namespace> Namespaces { get; set; }
 
-		[JsonPropertyName("types")]
+
 		public Dictionary<string, ProtodefType> Types { get; set; }
 
 

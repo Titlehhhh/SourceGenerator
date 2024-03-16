@@ -1,6 +1,6 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefArray : ProtodefType
+	public sealed class ProtodefArray : ProtodefType
 	{
 		public ProtodefArray(ProtodefType type, ProtodefType countType, string? count)
 		{

@@ -2,7 +2,7 @@
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	public class Namespace : ProtodefType, IEnumerable<ProtodefType>
+	public sealed class Namespace : ProtodefType, IEnumerable<ProtodefType>
 	{
 		private IEnumerable<ProtodefType> _types;
 		public Namespace(ProtodefType type)

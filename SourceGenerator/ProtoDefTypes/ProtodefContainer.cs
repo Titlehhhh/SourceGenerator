@@ -1,6 +1,6 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefContainer : ProtodefType
+	public sealed class ProtodefContainer : ProtodefType
 	{
 		private readonly List<ProtodefContainerField> fields = new();
 

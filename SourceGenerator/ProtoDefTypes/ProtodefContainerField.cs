@@ -1,6 +1,6 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefContainerField
+	public sealed class ProtodefContainerField
 	{
 
 

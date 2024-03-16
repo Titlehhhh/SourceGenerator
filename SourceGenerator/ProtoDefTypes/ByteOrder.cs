@@ -1,7 +1,9 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public abstract class ProtodefType
+	public enum ByteOrder
 	{
+		BigEndian,
+		LittleEndian
 	}
 
 

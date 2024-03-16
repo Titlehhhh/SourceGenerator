@@ -1,1163 +1,1180 @@
 {
-  "types": {
-    "varint": "native",
-    "varlong": "native",
-    "optvarint": "varint",
-    "pstring": "native",
-    "u16": "native",
-    "u8": "native",
-    "i64": "native",
-    "buffer": "native",
-    "i32": "native",
-    "i8": "native",
-    "bool": "native",
-    "i16": "native",
-    "f32": "native",
-    "f64": "native",
-    "UUID": "native",
-    "option": "native",
-    "entityMetadataLoop": "native",
-    "topBitSetTerminatedArray": "native",
-    "bitfield": "native",
-    "container": "native",
-    "switch": "native",
-    "void": "native",
-    "array": "native",
-    "restBuffer": "native",
-    "nbt": "native",
-    "optionalNbt": "native",
-    "string": [
-      "pstring",
-      {
-        "countType": "varint"
-      }
-    ],
-    "slot": [
-      "container",
-      [
-        {
-          "name": "present",
-          "type": "bool"
-        },
-        {
-          "anon": true,
-          "type": [
-            "switch",
-            {
-              "compareTo": "present",
-              "fields": {
-                "false": "void",
-                "true": [
-                  "container",
-                  [
-                    {
-                      "name": "itemId",
-                      "type": "varint"
-                    },
-                    {
-                      "name": "itemCount",
-                      "type": "i8"
-                    },
-                    {
-                      "name": "nbtData",
-                      "type": "optionalNbt"
-                    }
-                  ]
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    ],
-    "particle": [
-      "container",
-      [
-        {
-          "name": "particleId",
-          "type": "varint"
-        },
-        {
-          "name": "data",
-          "type": [
-            "particleData",
-            {
-              "compareTo": "particleId"
-            }
-          ]
-        }
-      ]
-    ],
-    "particleData": [
-      "switch",
-      {
-        "compareTo": "$compareTo",
-        "fields": {
-          "3": [
-            "container", [
-              {
-                "name": "blockState",
-                "type": "varint"
-              }
-            ]
-          ],
-          "14": [
-            "container", [
-              {
-                "name": "red",
-                "type": "f32"
-              },
-              {
-                "name": "green",
-                "type": "f32"
-              },
-              {
-                "name": "blue",
-                "type": "f32"
-              },
-              {
-                "name": "scale",
-                "type": "f32"
-              }
-            ]
-          ],
-          "23": [
-            "container", [
-              {
-                "name": "blockState",
-                "type": "varint"
-              }
-            ]
-          ],
-          "34":  [
-            "container", [
-              {
-                "name": "item",
-                "type": "slot"
-              }
-            ]
-          ]
-        },
-        "default": "void"
-      }
-    ],
-    "ingredient": [
-      "array",
-      {
-        "countType": "varint",
-        "type": "slot"
-      }
-    ],
-    "position": [
-      "bitfield",
-      [
-        {
-          "name": "x",
-          "size": 26,
-          "signed": true
-        },
-        {
-          "name": "z",
-          "size": 26,
-          "signed": true
-        },
-        {
-          "name": "y",
-          "size": 12,
-          "signed": true
-        }
-      ]
-    ],
-    "entityMetadataItem": [
-      "switch",
-      {
-        "compareTo": "$compareTo",
-        "fields": {
-          "0": "i8",
-          "1": "varint",
-          "2": "f32",
-          "3": "string",
-          "4": "string",
-          "5": [
-            "option",
-            "string"
-          ],
-          "6": "slot",
-          "7": "bool",
-          "8": [
-            "container",
-            [
-              {
-                "name": "pitch",
-                "type": "f32"
-              },
-              {
-                "name": "yaw",
-                "type": "f32"
-              },
-              {
-                "name": "roll",
-                "type": "f32"
-              }
-            ]
-          ],
-          "9": "position",
-          "10": [
-            "option",
-            "position"
-          ],
-          "11": "varint",
-          "12": [
-            "option",
-            "UUID"
-          ],
-          "13": "varint",
-          "14": "nbt",
-          "15": "particle",
-          "16": [
-            "container",[
-              {
-                "name": "villagerType",
-                "type": "varint"
-              },
-              {
-                "name": "villagerProfession",
-                "type": "varint"
-              },
-              {
-                "name": "level",
-                "type": "varint"
-              }
-            ]
-          ],
-          "17": "optvarint",
-          "18": "varint"
-        }
-      }
-    ],
-    "entityMetadata": [
-      "entityMetadataLoop",
-      {
-        "endVal": 255,
-        "type": [
-          "container",
-          [
-            {
-              "anon": true,
-              "type": [
-                "container",
-                [
-                  {
-                    "name": "key",
-                    "type": "u8"
-                  },
-                  {
-                    "name": "type",
-                    "type": "varint"
-                  }
-                ]
-              ]
-            },
-            {
-              "name": "value",
-              "type": [
-                "entityMetadataItem",
-                {
-                  "compareTo": "type"
-                }
-              ]
-            }
-          ]
-        ]
-      }
-    ],
-    "minecraft_smelting_format": ["container",[
-      {
-        "name": "group",
-        "type": "string"
-      },
-      {
-        "name": "ingredient",
-        "type": "ingredient"
-      },
-      {
-        "name": "result",
-        "type": "slot"
-      },
-      {
-        "name": "experience",
-        "type": "f32"
-      },
-      {
-        "name": "cookTime",
-        "type": "varint"
-      }
-    ]],
-    "tags":["array",{
-      "countType": "varint",
-      "type": ["container", [
-        {
-          "name": "tagName",
-          "type": "string"
-        },
-        {
-          "name": "entries",
-          "type": ["array",{
-            "countType": "varint",
-            "type": "varint"
-          }]
-        }
-      ]]
-    }],
-    "command_node": [
-      "container",
-      [
-        {
-          "name": "flags",
-          "type": [
-            "bitfield",
-            [
-              {
-                "name": "unused",
-                "size": 3,
-                "signed": false
-              },
-              {
-                "name": "has_custom_suggestions",
-                "size": 1,
-                "signed": false
-              },
-              {
-                "name": "has_redirect_node",
-                "size": 1,
-                "signed": false
-              },
-              {
-                "name": "has_command",
-                "size": 1,
-                "signed": false
-              },
-              {
-                "name": "command_node_type",
-                "size": 2,
-                "signed": false
-              }
-            ]
-          ]
-        },
-        {
-          "name": "children",
-          "type": [
-            "array",
-            {
-              "countType": "varint",
-              "type": "varint"
-            }
-          ]
-        },
-        {
-          "name": "redirectNode",
-          "type": [
-            "switch",
-            {
-              "compareTo": "flags/has_redirect_node",
-              "fields": {
-                "1": "varint"
-              },
-              "default": "void"
-            }
-          ]
-        },
-        {
-          "name": "extraNodeData",
-          "type": [
-            "switch",
-            {
-              "compareTo": "flags/command_node_type",
-              "fields": {
-                "0": "void",
-                "1": [
-                  "container",
-                  [
-                    {
-                      "name": "name",
-                      "type": "string"
-                    }
-                  ]
-                ],
-                "2": [
-                  "container",
-                  [
-                    {
-                      "name": "name",
-                      "type": "string"
-                    },
-                    {
-                      "name": "parser",
-                      "type": "string"
-                    },
-                    {
-                      "name": "properties",
-                      "type": [
-                        "switch",
-                        {
-                          "compareTo": "parser",
-                          "fields": {
-                            "brigadier:bool": "void",
-                            "brigadier:float": [
-                              "container",
-                              [
-                                {
-                                  "name": "flags",
-                                  "type": [
-                                    "bitfield",
-                                    [
-                                      {
-                                        "name": "unused",
-                                        "size": 6,
-                                        "signed": false
-                                      },
-                                      {
-                                        "name": "max_present",
-                                        "size": 1,
-                                        "signed": false
-                                      },
-                                      {
-                                        "name": "min_present",
-                                        "size": 1,
-                                        "signed": false
-                                      }
-                                    ]
-                                  ]
-                                },
-                                {
-                                  "name": "min",
-                                  "type": [
-                                    "switch",
-                                    {
-                                      "compareTo": "flags/min_present",
-                                      "fields": {
-                                        "1": "f32"
-                                      },
-                                      "default": "void"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "max",
-                                  "type": [
-                                    "switch",
-                                    {
-                                      "compareTo": "flags/max_present",
-                                      "fields": {
-                                        "1": "f32"
-                                      },
-                                      "default": "void"
-                                    }
-                                  ]
-                                }
-                              ]
-                            ],
-                            "brigadier:double": [
-                              "container",
-                              [
-                                {
-                                  "name": "flags",
-                                  "type": [
-                                    "bitfield",
-                                    [
-                                      {
-                                        "name": "unused",
-                                        "size": 6,
-                                        "signed": false
-                                      },
-                                      {
-                                        "name": "max_present",
-                                        "size": 1,
-                                        "signed": false
-                                      },
-                                      {
-                                        "name": "min_present",
-                                        "size": 1,
-                                        "signed": false
-                                      }
-                                    ]
-                                  ]
-                                },
-                                {
-                                  "name": "min",
-                                  "type": [
-                                    "switch",
-                                    {
-                                      "compareTo": "flags/min_present",
-                                      "fields": {
-                                        "1": "f64"
-                                      },
-                                      "default": "void"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "max",
-                                  "type": [
-                                    "switch",
-                                    {
-                                      "compareTo": "flags/max_present",
-                                      "fields": {
-                                        "1": "f64"
-                                      },
-                                      "default": "void"
-                                    }
-                                  ]
-                                }
-                              ]
-                            ],
-                            "brigadier:integer": [
-                              "container",
-                              [
-                                {
-                                  "name": "flags",
-                                  "type": [
-                                    "bitfield",
-                                    [
-                                      {
-                                        "name": "unused",
-                                        "size": 6,
-                                        "signed": false
-                                      },
-                                      {
-                                        "name": "max_present",
-                                        "size": 1,
-                                        "signed": false
-                                      },
-                                      {
-                                        "name": "min_present",
-                                        "size": 1,
-                                        "signed": false
-                                      }
-                                    ]
-                                  ]
-                                },
-                                {
-                                  "name": "min",
-                                  "type": [
-                                    "switch",
-                                    {
-                                      "compareTo": "flags/min_present",
-                                      "fields": {
-                                        "1": "i32"
-                                      },
-                                      "default": "void"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "max",
-                                  "type": [
-                                    "switch",
-                                    {
-                                      "compareTo": "flags/max_present",
-                                      "fields": {
-                                        "1": "i32"
-                                      },
-                                      "default": "void"
-                                    }
-                                  ]
-                                }
-                              ]
-                            ],
-                            "brigadier:long": [
-                              "container",
-                              [
-                                {
-                                  "name": "flags",
-                                  "type": [
-                                    "bitfield",
-                                    [
-                                      {
-                                        "name": "unused",
-                                        "size": 6,
-                                        "signed": false
-                                      },
-                                      {
-                                        "name": "max_present",
-                                        "size": 1,
-                                        "signed": false
-                                      },
-                                      {
-                                        "name": "min_present",
-                                        "size": 1,
-                                        "signed": false
-                                      }
-                                    ]
-                                  ]
-                                },
-                                {
-                                  "name": "min",
-                                  "type": [
-                                    "switch",
-                                    {
-                                      "compareTo": "flags/min_present",
-                                      "fields": {
-                                        "1": "i64"
-                                      },
-                                      "default": "void"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "max",
-                                  "type": [
-                                    "switch",
-                                    {
-                                      "compareTo": "flags/max_present",
-                                      "fields": {
-                                        "1": "i64"
-                                      },
-                                      "default": "void"
-                                    }
-                                  ]
-                                }
-                              ]
-                            ],
-                            "brigadier:string": [
-                              "mapper",
-                              {
-                                "type": "varint",
-                                "mappings": {
-                                  "0": "SINGLE_WORD",
-                                  "1": "QUOTABLE_PHRASE",
-                                  "2": "GREEDY_PHRASE"
-                                }
-                              }
-                            ],
-                            "minecraft:entity": [
-                              "bitfield",
-                              [
-                                {
-                                  "name": "unused",
-                                  "size": 6,
-                                  "signed": false
-                                },
-                                {
-                                  "name": "onlyAllowPlayers",
-                                  "size": 1,
-                                  "signed": false
-                                },
-                                {
-                                  "name": "onlyAllowEntities",
-                                  "size": 1,
-                                  "signed": false
-                                }
-                              ]
-                            ],
-                            "minecraft:game_profile": "void",
-                            "minecraft:block_pos": "void",
-                            "minecraft:column_pos": "void",
-                            "minecraft:vec3": "void",
-                            "minecraft:vec2": "void",
-                            "minecraft:block_state": "void",
-                            "minecraft:block_predicate": "void",
-                            "minecraft:item_stack": "void",
-                            "minecraft:item_predicate": "void",
-                            "minecraft:color": "void",
-                            "minecraft:component": "void",
-                            "minecraft:message": "void",
-                            "minecraft:nbt": "void",
-                            "minecraft:nbt_path": "void",
-                            "minecraft:objective": "void",
-                            "minecraft:objective_criteria": "void",
-                            "minecraft:operation": "void",
-                            "minecraft:particle": "void",
-                            "minecraft:angle": "void",
-                            "minecraft:rotation": "void",
-                            "minecraft:scoreboard_slot": "void",
-                            "minecraft:score_holder": [
-                              "bitfield",
-                              [
-                                {
-                                  "name": "unused",
-                                  "size": 7,
-                                  "signed": false
-                                },
-                                {
-                                  "name": "allowMultiple",
-                                  "size": 1,
-                                  "signed": false
-                                }
-                              ]
-                            ],
-                            "minecraft:swizzle": "void",
-                            "minecraft:team": "void",
-                            "minecraft:item_slot": "void",
-                            "minecraft:resource_location": "void",
-                            "minecraft:mob_effect": "void",
-                            "minecraft:function": "void",
-                            "minecraft:entity_anchor": "void",
-                            "minecraft:range": [
-                              "container",
-                              [
-                                {
-                                  "name": "allowDecimals",
-                                  "type": "bool"
-                                }
-                              ]
-                            ],
-                            "minecraft:int_range": "void",
-                            "minecraft:float_range": "void",
-                            "minecraft:item_enchantment": "void",
-                            "minecraft:entity_summon": "void",
-                            "minecraft:dimension": "void",
-                            "minecraft:nbt_compound_tag": "void",
-                            "minecraft:time": "void",
-                            "minecraft:resource_or_tag": [
-                              "container",
-                              [
-                                {
-                                  "name": "registry",
-                                  "type": "string"
-                                }
-                              ]
-                            ],
-                            "minecraft:resource": [
-                              "container",
-                              [
-                                {
-                                  "name": "registry",
-                                  "type": "string"
-                                }
-                              ]
-                            ],
-                            "minecraft:uuid": "void"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "name": "suggestionType",
-                      "type": [
-                        "switch",
-                        {
-                          "compareTo": "../flags/has_custom_suggestions",
-                          "fields": {
-                            "1": "string"
-                          },
-                          "default": "void"
-                        }
-                      ]
-                    }
-                  ]
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    ]
-  },
-  "handshaking": {
-    "toClient": {
-      "types": {
-        "packet": [
-          "container",
-          [
-            {
-              "name": "name",
-              "type": [
-                "mapper",
-                {
-                  "type": "varint",
-                  "mappings": {}
-                }
-              ]
-            },
-            {
-              "name": "params",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "name",
-                  "fields": {}
-                }
-              ]
-            }
-          ]
-        ]
-      }
-    },
-    "toServer": {
-      "types": {
-        "packet_set_protocol": [
-          "container",
-          [
-            {
-              "name": "protocolVersion",
-              "type": "varint"
-            },
-            {
-              "name": "serverHost",
-              "type": "string"
-            },
-            {
-              "name": "serverPort",
-              "type": "u16"
-            },
-            {
-              "name": "nextState",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_legacy_server_list_ping": [
-          "container",
-          [
-            {
-              "name": "payload",
-              "type": "u8"
-            }
-          ]
-        ],
-        "packet": [
-          "container",
-          [
-            {
-              "name": "name",
-              "type": [
-                "mapper",
-                {
-                  "type": "varint",
-                  "mappings": {
-                    "0x00": "set_protocol",
-                    "0xfe": "legacy_server_list_ping"
-                  }
-                }
-              ]
-            },
-            {
-              "name": "params",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "name",
-                  "fields": {
-                    "set_protocol": "packet_set_protocol",
-                    "legacy_server_list_ping": "packet_legacy_server_list_ping"
-                  }
-                }
-              ]
-            }
-          ]
-        ]
-      }
-    }
-  },
-  "status": {
-    "toClient": {
-      "types": {
-        "packet_server_info": [
-          "container",
-          [
-            {
-              "name": "response",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_ping": [
-          "container",
-          [
-            {
-              "name": "time",
-              "type": "i64"
-            }
-          ]
-        ],
-        "packet": [
-          "container",
-          [
-            {
-              "name": "name",
-              "type": [
-                "mapper",
-                {
-                  "type": "varint",
-                  "mappings": {
-                    "0x00": "server_info",
-                    "0x01": "ping"
-                  }
-                }
-              ]
-            },
-            {
-              "name": "params",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "name",
-                  "fields": {
-                    "server_info": "packet_server_info",
-                    "ping": "packet_ping"
-                  }
-                }
-              ]
-            }
-          ]
-        ]
-      }
-    },
-    "toServer": {
-      "types": {
-        "packet_ping_start": [
-          "container",
-          []
-        ],
-        "packet_ping": [
-          "container",
-          [
-            {
-              "name": "time",
-              "type": "i64"
-            }
-          ]
-        ],
-        "packet": [
-          "container",
-          [
-            {
-              "name": "name",
-              "type": [
-                "mapper",
-                {
-                  "type": "varint",
-                  "mappings": {
-                    "0x00": "ping_start",
-                    "0x01": "ping"
-                  }
-                }
-              ]
-            },
-            {
-              "name": "params",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "name",
-                  "fields": {
-                    "ping_start": "packet_ping_start",
-                    "ping": "packet_ping"
-                  }
-                }
-              ]
-            }
-          ]
-        ]
-      }
-    }
-  },
-  "login": {
-    "toClient": {
-      "types": {
-        "packet_disconnect": [
-          "container",
-          [
-            {
-              "name": "reason",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_encryption_begin": [
-          "container",
-          [
-            {
-              "name": "serverId",
-              "type": "string"
-            },
-            {
-              "name": "publicKey",
-              "type": [
-                "buffer",
-                {
-                  "countType": "varint"
-                }
-              ]
-            },
-            {
-              "name": "verifyToken",
-              "type": [
-                "buffer",
-                {
-                  "countType": "varint"
-                }
-              ]
-            }
-          ]
-        ],
-        "packet_success": [
-          "container",
-          [
-            {
-              "name": "uuid",
-              "type": "UUID"
-            },
-            {
-              "name": "username",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_compress": [
-          "container",
-          [
-            {
-              "name": "threshold",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_login_plugin_request": [
-          "container",
-          [
-            {
-              "name": "messageId",
-              "type": "varint"
-            },
-            {
-              "name": "channel",
-              "type": "string"
-            },
-            {
-              "name": "data",
-              "type": "restBuffer"
-            }
-          ]
-        ],
-        "packet": [
-          "container",
-          [
-            {
-              "name": "name",
-              "type": [
-                "mapper",
-                {
-                  "type": "varint",
-                  "mappings": {
-                    "0x00": "disconnect",
-                    "0x01": "encryption_begin",
-                    "0x02": "success",
-                    "0x03": "compress",
-                    "0x04": "login_plugin_request"
-                  }
-                }
-              ]
-            },
-            {
-              "name": "params",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "name",
-                  "fields": {
-                    "disconnect": "packet_disconnect",
-                    "encryption_begin": "packet_encryption_begin",
-                    "success": "packet_success",
-                    "compress": "packet_compress",
-                    "login_plugin_request": "packet_login_plugin_request"
-                  }
-                }
-              ]
-            }
-          ]
-        ]
-      }
-    },
-    "toServer": {
-      "types": {
-        "packet_login_start": [
-          "container",
-          [
-            {
-              "name": "username",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_encryption_begin": [
-          "container",
-          [
-            {
-              "name": "sharedSecret",
-              "type": [
-                "buffer",
-                {
-                  "countType": "varint"
-                }
-              ]
-            },
-            {
-              "name": "verifyToken",
-              "type": [
-                "buffer",
-                {
-                  "countType": "varint"
-                }
-              ]
-            }
-          ]
-        ],
-        "packet_login_plugin_response": [
-          "container",
-          [
-            {
-              "name": "messageId",
-              "type": "varint"
-            },
-            {
-              "name": "data",
-              "type": [
-                "option",
-                "restBuffer"
-              ]
-            }
-          ]
-        ],
-        "packet": [
-          "container",
-          [
-            {
-              "name": "name",
-              "type": [
-                "mapper",
-                {
-                  "type": "varint",
-                  "mappings": {
-                    "0x00": "login_start",
-                    "0x01": "encryption_begin",
-                    "0x02": "login_plugin_response"
-                  }
-                }
-              ]
-            },
-            {
-              "name": "params",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "name",
-                  "fields": {
-                    "login_start": "packet_login_start",
-                    "encryption_begin": "packet_encryption_begin",
-                    "login_plugin_response": "packet_login_plugin_response"
-                  }
-                }
-              ]
-            }
-          ]
-        ]
-      }
-    }
-  },
-  "play": {
+	"types": {
+		"varint": "native",
+		"varlong": "native",
+		"optvarint": "varint",
+		"pstring": "native",
+		"u16": "native",
+		"u8": "native",
+		"i64": "native",
+		"buffer": "native",
+		"i32": "native",
+		"i8": "native",
+		"bool": "native",
+		"i16": "native",
+		"f32": "native",
+		"f64": "native",
+		"UUID": "native",
+		"option": "native",
+		"entityMetadataLoop": "native",
+		"topBitSetTerminatedArray": "native",
+		"bitfield": "native",
+		"container": "native",
+		"switch": "native",
+		"void": "native",
+		"array": "native",
+		"restBuffer": "native",
+		"nbt": "native",
+		"optionalNbt": "native",
+		"string": [
+			"pstring",
+			{
+				"countType": "varint"
+			}
+		],
+		"slot": [
+			"container",
+			[
+				{
+					"name": "present",
+					"type": "bool"
+				},
+				{
+					"anon": true,
+					"type": [
+						"switch",
+						{
+							"compareTo": "present",
+							"fields": {
+								"false": "void",
+								"true": [
+									"container",
+									[
+										{
+											"name": "itemId",
+											"type": "varint"
+										},
+										{
+											"name": "itemCount",
+											"type": "i8"
+										},
+										{
+											"name": "nbtData",
+											"type": "optionalNbt"
+										}
+									]
+								]
+							}
+						}
+					]
+				}
+			]
+		],
+		"particle": [
+			"container",
+			[
+				{
+					"name": "particleId",
+					"type": "varint"
+				},
+				{
+					"name": "data",
+					"type": [
+						"particleData",
+						{
+							"compareTo": "particleId"
+						}
+					]
+				}
+			]
+		],
+		"particleData": [
+			"switch",
+			{
+				"compareTo": "$compareTo",
+				"fields": {
+					"3": [
+						"container",
+						[
+							{
+								"name": "blockState",
+								"type": "varint"
+							}
+						]
+					],
+					"14": [
+						"container",
+						[
+							{
+								"name": "red",
+								"type": "f32"
+							},
+							{
+								"name": "green",
+								"type": "f32"
+							},
+							{
+								"name": "blue",
+								"type": "f32"
+							},
+							{
+								"name": "scale",
+								"type": "f32"
+							}
+						]
+					],
+					"23": [
+						"container",
+						[
+							{
+								"name": "blockState",
+								"type": "varint"
+							}
+						]
+					],
+					"34": [
+						"container",
+						[
+							{
+								"name": "item",
+								"type": "slot"
+							}
+						]
+					]
+				},
+				"default": "void"
+			}
+		],
+		"ingredient": [
+			"array",
+			{
+				"countType": "varint",
+				"type": "slot"
+			}
+		],
+		"position": [
+			"bitfield",
+			[
+				{
+					"name": "x",
+					"size": 26,
+					"signed": true
+				},
+				{
+					"name": "z",
+					"size": 26,
+					"signed": true
+				},
+				{
+					"name": "y",
+					"size": 12,
+					"signed": true
+				}
+			]
+		],
+		"entityMetadataItem": [
+			"switch",
+			{
+				"compareTo": "$compareTo",
+				"fields": {
+					"0": "i8",
+					"1": "varint",
+					"2": "f32",
+					"3": "string",
+					"4": "string",
+					"5": [
+						"option",
+						"string"
+					],
+					"6": "slot",
+					"7": "bool",
+					"8": [
+						"container",
+						[
+							{
+								"name": "pitch",
+								"type": "f32"
+							},
+							{
+								"name": "yaw",
+								"type": "f32"
+							},
+							{
+								"name": "roll",
+								"type": "f32"
+							}
+						]
+					],
+					"9": "position",
+					"10": [
+						"option",
+						"position"
+					],
+					"11": "varint",
+					"12": [
+						"option",
+						"UUID"
+					],
+					"13": "varint",
+					"14": "nbt",
+					"15": "particle",
+					"16": [
+						"container",
+						[
+							{
+								"name": "villagerType",
+								"type": "varint"
+							},
+							{
+								"name": "villagerProfession",
+								"type": "varint"
+							},
+							{
+								"name": "level",
+								"type": "varint"
+							}
+						]
+					],
+					"17": "optvarint",
+					"18": "varint"
+				}
+			}
+		],
+		"entityMetadata": [
+			"entityMetadataLoop",
+			{
+				"endVal": 255,
+				"type": [
+					"container",
+					[
+						{
+							"anon": true,
+							"type": [
+								"container",
+								[
+									{
+										"name": "key",
+										"type": "u8"
+									},
+									{
+										"name": "type",
+										"type": "varint"
+									}
+								]
+							]
+						},
+						{
+							"name": "value",
+							"type": [
+								"entityMetadataItem",
+								{
+									"compareTo": "type"
+								}
+							]
+						}
+					]
+				]
+			}
+		],
+		"minecraft_smelting_format": [
+			"container",
+			[
+				{
+					"name": "group",
+					"type": "string"
+				},
+				{
+					"name": "ingredient",
+					"type": "ingredient"
+				},
+				{
+					"name": "result",
+					"type": "slot"
+				},
+				{
+					"name": "experience",
+					"type": "f32"
+				},
+				{
+					"name": "cookTime",
+					"type": "varint"
+				}
+			]
+		],
+		"tags": [
+			"array",
+			{
+				"countType": "varint",
+				"type": [
+					"container",
+					[
+						{
+							"name": "tagName",
+							"type": "string"
+						},
+						{
+							"name": "entries",
+							"type": [
+								"array",
+								{
+									"countType": "varint",
+									"type": "varint"
+								}
+							]
+						}
+					]
+				]
+			}
+		],
+		"command_node": [
+			"container",
+			[
+				{
+					"name": "flags",
+					"type": [
+						"bitfield",
+						[
+							{
+								"name": "unused",
+								"size": 3,
+								"signed": false
+							},
+							{
+								"name": "has_custom_suggestions",
+								"size": 1,
+								"signed": false
+							},
+							{
+								"name": "has_redirect_node",
+								"size": 1,
+								"signed": false
+							},
+							{
+								"name": "has_command",
+								"size": 1,
+								"signed": false
+							},
+							{
+								"name": "command_node_type",
+								"size": 2,
+								"signed": false
+							}
+						]
+					]
+				},
+				{
+					"name": "children",
+					"type": [
+						"array",
+						{
+							"countType": "varint",
+							"type": "varint"
+						}
+					]
+				},
+				{
+					"name": "redirectNode",
+					"type": [
+						"switch",
+						{
+							"compareTo": "flags/has_redirect_node",
+							"fields": {
+								"1": "varint"
+							},
+							"default": "void"
+						}
+					]
+				},
+				{
+					"name": "extraNodeData",
+					"type": [
+						"switch",
+						{
+							"compareTo": "flags/command_node_type",
+							"fields": {
+								"0": "void",
+								"1": [
+									"container",
+									[
+										{
+											"name": "name",
+											"type": "string"
+										}
+									]
+								],
+								"2": [
+									"container",
+									[
+										{
+											"name": "name",
+											"type": "string"
+										},
+										{
+											"name": "parser",
+											"type": "string"
+										},
+										{
+											"name": "properties",
+											"type": [
+												"switch",
+												{
+													"compareTo": "parser",
+													"fields": {
+														"brigadier:bool": "void",
+														"brigadier:float": [
+															"container",
+															[
+																{
+																	"name": "flags",
+																	"type": [
+																		"bitfield",
+																		[
+																			{
+																				"name": "unused",
+																				"size": 6,
+																				"signed": false
+																			},
+																			{
+																				"name": "max_present",
+																				"size": 1,
+																				"signed": false
+																			},
+																			{
+																				"name": "min_present",
+																				"size": 1,
+																				"signed": false
+																			}
+																		]
+																	]
+																},
+																{
+																	"name": "min",
+																	"type": [
+																		"switch",
+																		{
+																			"compareTo": "flags/min_present",
+																			"fields": {
+																				"1": "f32"
+																			},
+																			"default": "void"
+																		}
+																	]
+																},
+																{
+																	"name": "max",
+																	"type": [
+																		"switch",
+																		{
+																			"compareTo": "flags/max_present",
+																			"fields": {
+																				"1": "f32"
+																			},
+																			"default": "void"
+																		}
+																	]
+																}
+															]
+														],
+														"brigadier:double": [
+															"container",
+															[
+																{
+																	"name": "flags",
+																	"type": [
+																		"bitfield",
+																		[
+																			{
+																				"name": "unused",
+																				"size": 6,
+																				"signed": false
+																			},
+																			{
+																				"name": "max_present",
+																				"size": 1,
+																				"signed": false
+																			},
+																			{
+																				"name": "min_present",
+																				"size": 1,
+																				"signed": false
+																			}
+																		]
+																	]
+																},
+																{
+																	"name": "min",
+																	"type": [
+																		"switch",
+																		{
+																			"compareTo": "flags/min_present",
+																			"fields": {
+																				"1": "f64"
+																			},
+																			"default": "void"
+																		}
+																	]
+																},
+																{
+																	"name": "max",
+																	"type": [
+																		"switch",
+																		{
+																			"compareTo": "flags/max_present",
+																			"fields": {
+																				"1": "f64"
+																			},
+																			"default": "void"
+																		}
+																	]
+																}
+															]
+														],
+														"brigadier:integer": [
+															"container",
+															[
+																{
+																	"name": "flags",
+																	"type": [
+																		"bitfield",
+																		[
+																			{
+																				"name": "unused",
+																				"size": 6,
+																				"signed": false
+																			},
+																			{
+																				"name": "max_present",
+																				"size": 1,
+																				"signed": false
+																			},
+																			{
+																				"name": "min_present",
+																				"size": 1,
+																				"signed": false
+																			}
+																		]
+																	]
+																},
+																{
+																	"name": "min",
+																	"type": [
+																		"switch",
+																		{
+																			"compareTo": "flags/min_present",
+																			"fields": {
+																				"1": "i32"
+																			},
+																			"default": "void"
+																		}
+																	]
+																},
+																{
+																	"name": "max",
+																	"type": [
+																		"switch",
+																		{
+																			"compareTo": "flags/max_present",
+																			"fields": {
+																				"1": "i32"
+																			},
+																			"default": "void"
+																		}
+																	]
+																}
+															]
+														],
+														"brigadier:long": [
+															"container",
+															[
+																{
+																	"name": "flags",
+																	"type": [
+																		"bitfield",
+																		[
+																			{
+																				"name": "unused",
+																				"size": 6,
+																				"signed": false
+																			},
+																			{
+																				"name": "max_present",
+																				"size": 1,
+																				"signed": false
+																			},
+																			{
+																				"name": "min_present",
+																				"size": 1,
+																				"signed": false
+																			}
+																		]
+																	]
+																},
+																{
+																	"name": "min",
+																	"type": [
+																		"switch",
+																		{
+																			"compareTo": "flags/min_present",
+																			"fields": {
+																				"1": "i64"
+																			},
+																			"default": "void"
+																		}
+																	]
+																},
+																{
+																	"name": "max",
+																	"type": [
+																		"switch",
+																		{
+																			"compareTo": "flags/max_present",
+																			"fields": {
+																				"1": "i64"
+																			},
+																			"default": "void"
+																		}
+																	]
+																}
+															]
+														],
+														"brigadier:string": [
+															"mapper",
+															{
+																"type": "varint",
+																"mappings": {
+																	"0": "SINGLE_WORD",
+																	"1": "QUOTABLE_PHRASE",
+																	"2": "GREEDY_PHRASE"
+																}
+															}
+														],
+														"minecraft:entity": [
+															"bitfield",
+															[
+																{
+																	"name": "unused",
+																	"size": 6,
+																	"signed": false
+																},
+																{
+																	"name": "onlyAllowPlayers",
+																	"size": 1,
+																	"signed": false
+																},
+																{
+																	"name": "onlyAllowEntities",
+																	"size": 1,
+																	"signed": false
+																}
+															]
+														],
+														"minecraft:game_profile": "void",
+														"minecraft:block_pos": "void",
+														"minecraft:column_pos": "void",
+														"minecraft:vec3": "void",
+														"minecraft:vec2": "void",
+														"minecraft:block_state": "void",
+														"minecraft:block_predicate": "void",
+														"minecraft:item_stack": "void",
+														"minecraft:item_predicate": "void",
+														"minecraft:color": "void",
+														"minecraft:component": "void",
+														"minecraft:message": "void",
+														"minecraft:nbt": "void",
+														"minecraft:nbt_path": "void",
+														"minecraft:objective": "void",
+														"minecraft:objective_criteria": "void",
+														"minecraft:operation": "void",
+														"minecraft:particle": "void",
+														"minecraft:angle": "void",
+														"minecraft:rotation": "void",
+														"minecraft:scoreboard_slot": "void",
+														"minecraft:score_holder": [
+															"bitfield",
+															[
+																{
+																	"name": "unused",
+																	"size": 7,
+																	"signed": false
+																},
+																{
+																	"name": "allowMultiple",
+																	"size": 1,
+																	"signed": false
+																}
+															]
+														],
+														"minecraft:swizzle": "void",
+														"minecraft:team": "void",
+														"minecraft:item_slot": "void",
+														"minecraft:resource_location": "void",
+														"minecraft:mob_effect": "void",
+														"minecraft:function": "void",
+														"minecraft:entity_anchor": "void",
+														"minecraft:range": [
+															"container",
+															[
+																{
+																	"name": "allowDecimals",
+																	"type": "bool"
+																}
+															]
+														],
+														"minecraft:int_range": "void",
+														"minecraft:float_range": "void",
+														"minecraft:item_enchantment": "void",
+														"minecraft:entity_summon": "void",
+														"minecraft:dimension": "void",
+														"minecraft:nbt_compound_tag": "void",
+														"minecraft:time": "void",
+														"minecraft:resource_or_tag": [
+															"container",
+															[
+																{
+																	"name": "registry",
+																	"type": "string"
+																}
+															]
+														],
+														"minecraft:resource": [
+															"container",
+															[
+																{
+																	"name": "registry",
+																	"type": "string"
+																}
+															]
+														],
+														"minecraft:uuid": "void"
+													}
+												}
+											]
+										},
+										{
+											"name": "suggestionType",
+											"type": [
+												"switch",
+												{
+													"compareTo": "../flags/has_custom_suggestions",
+													"fields": {
+														"1": "string"
+													},
+													"default": "void"
+												}
+											]
+										}
+									]
+								]
+							}
+						}
+					]
+				}
+			]
+		]
+	},
+	"handshaking": {
+		"toClient": {
+			"types": {
+				"packet": [
+					"container",
+					[
+						{
+							"name": "name",
+							"type": [
+								"mapper",
+								{
+									"type": "varint",
+									"mappings": {}
+								}
+							]
+						},
+						{
+							"name": "params",
+							"type": [
+								"switch",
+								{
+									"compareTo": "name",
+									"fields": {}
+								}
+							]
+						}
+					]
+				]
+			}
+		},
+		"toServer": {
+			"types": {
+				"packet_set_protocol": [
+					"container",
+					[
+						{
+							"name": "protocolVersion",
+							"type": "varint"
+						},
+						{
+							"name": "serverHost",
+							"type": "string"
+						},
+						{
+							"name": "serverPort",
+							"type": "u16"
+						},
+						{
+							"name": "nextState",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_legacy_server_list_ping": [
+					"container",
+					[
+						{
+							"name": "payload",
+							"type": "u8"
+						}
+					]
+				],
+				"packet": [
+					"container",
+					[
+						{
+							"name": "name",
+							"type": [
+								"mapper",
+								{
+									"type": "varint",
+									"mappings": {
+										"0x00": "set_protocol",
+										"0xfe": "legacy_server_list_ping"
+									}
+								}
+							]
+						},
+						{
+							"name": "params",
+							"type": [
+								"switch",
+								{
+									"compareTo": "name",
+									"fields": {
+										"set_protocol": "packet_set_protocol",
+										"legacy_server_list_ping": "packet_legacy_server_list_ping"
+									}
+								}
+							]
+						}
+					]
+				]
+			}
+		}
+	},
+	"status": {
+		"toClient": {
+			"types": {
+				"packet_server_info": [
+					"container",
+					[
+						{
+							"name": "response",
+							"type": "string"
+						}
+					]
+				],
+				"packet_ping": [
+					"container",
+					[
+						{
+							"name": "time",
+							"type": "i64"
+						}
+					]
+				],
+				"packet": [
+					"container",
+					[
+						{
+							"name": "name",
+							"type": [
+								"mapper",
+								{
+									"type": "varint",
+									"mappings": {
+										"0x00": "server_info",
+										"0x01": "ping"
+									}
+								}
+							]
+						},
+						{
+							"name": "params",
+							"type": [
+								"switch",
+								{
+									"compareTo": "name",
+									"fields": {
+										"server_info": "packet_server_info",
+										"ping": "packet_ping"
+									}
+								}
+							]
+						}
+					]
+				]
+			}
+		},
+		"toServer": {
+			"types": {
+				"packet_ping_start": [
+					"container",
+					[]
+				],
+				"packet_ping": [
+					"container",
+					[
+						{
+							"name": "time",
+							"type": "i64"
+						}
+					]
+				],
+				"packet": [
+					"container",
+					[
+						{
+							"name": "name",
+							"type": [
+								"mapper",
+								{
+									"type": "varint",
+									"mappings": {
+										"0x00": "ping_start",
+										"0x01": "ping"
+									}
+								}
+							]
+						},
+						{
+							"name": "params",
+							"type": [
+								"switch",
+								{
+									"compareTo": "name",
+									"fields": {
+										"ping_start": "packet_ping_start",
+										"ping": "packet_ping"
+									}
+								}
+							]
+						}
+					]
+				]
+			}
+		}
+	},
+	"login": {
+		"toClient": {
+			"types": {
+				"packet_disconnect": [
+					"container",
+					[
+						{
+							"name": "reason",
+							"type": "string"
+						}
+					]
+				],
+				"packet_encryption_begin": [
+					"container",
+					[
+						{
+							"name": "serverId",
+							"type": "string"
+						},
+						{
+							"name": "publicKey",
+							"type": [
+								"buffer",
+								{
+									"countType": "varint"
+								}
+							]
+						},
+						{
+							"name": "verifyToken",
+							"type": [
+								"buffer",
+								{
+									"countType": "varint"
+								}
+							]
+						}
+					]
+				],
+				"packet_success": [
+					"container",
+					[
+						{
+							"name": "uuid",
+							"type": "UUID"
+						},
+						{
+							"name": "username",
+							"type": "string"
+						}
+					]
+				],
+				"packet_compress": [
+					"container",
+					[
+						{
+							"name": "threshold",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_login_plugin_request": [
+					"container",
+					[
+						{
+							"name": "messageId",
+							"type": "varint"
+						},
+						{
+							"name": "channel",
+							"type": "string"
+						},
+						{
+							"name": "data",
+							"type": "restBuffer"
+						}
+					]
+				],
+				"packet": [
+					"container",
+					[
+						{
+							"name": "name",
+							"type": [
+								"mapper",
+								{
+									"type": "varint",
+									"mappings": {
+										"0x00": "disconnect",
+										"0x01": "encryption_begin",
+										"0x02": "success",
+										"0x03": "compress",
+										"0x04": "login_plugin_request"
+									}
+								}
+							]
+						},
+						{
+							"name": "params",
+							"type": [
+								"switch",
+								{
+									"compareTo": "name",
+									"fields": {
+										"disconnect": "packet_disconnect",
+										"encryption_begin": "packet_encryption_begin",
+										"success": "packet_success",
+										"compress": "packet_compress",
+										"login_plugin_request": "packet_login_plugin_request"
+									}
+								}
+							]
+						}
+					]
+				]
+			}
+		},
+		"toServer": {
+			"types": {
+				"packet_login_start": [
+					"container",
+					[
+						{
+							"name": "username",
+							"type": "string"
+						}
+					]
+				],
+				"packet_encryption_begin": [
+					"container",
+					[
+						{
+							"name": "sharedSecret",
+							"type": [
+								"buffer",
+								{
+									"countType": "varint"
+								}
+							]
+						},
+						{
+							"name": "verifyToken",
+							"type": [
+								"buffer",
+								{
+									"countType": "varint"
+								}
+							]
+						}
+					]
+				],
+				"packet_login_plugin_response": [
+					"container",
+					[
+						{
+							"name": "messageId",
+							"type": "varint"
+						},
+						{
+							"name": "data",
+							"type": [
+								"option",
+								"restBuffer"
+							]
+						}
+					]
+				],
+				"packet": [
+					"container",
+					[
+						{
+							"name": "name",
+							"type": [
+								"mapper",
+								{
+									"type": "varint",
+									"mappings": {
+										"0x00": "login_start",
+										"0x01": "encryption_begin",
+										"0x02": "login_plugin_response"
+									}
+								}
+							]
+						},
+						{
+							"name": "params",
+							"type": [
+								"switch",
+								{
+									"compareTo": "name",
+									"fields": {
+										"login_start": "packet_login_start",
+										"encryption_begin": "packet_encryption_begin",
+										"login_plugin_response": "packet_login_plugin_response"
+									}
+								}
+							]
+						}
+					]
+				]
+			}
+		}
+	},
+	"play": {
 		"toClient": {
 			"types": {
 				"packet_spawn_entity": [
@@ -4495,971 +4512,970 @@
 				]
 			}
 		},
-    "toServer": {
-      "types": {
-        "packet_teleport_confirm": [
-          "container",
-          [
-            {
-              "name": "teleportId",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_query_block_nbt": [
-          "container",
-          [
-            {
-              "name": "transactionId",
-              "type": "varint"
-            },
-            {
-              "name": "location",
-              "type": "position"
-            }
-          ]
-        ],
-        "packet_set_difficulty": [
-          "container",
-          [
-            {
-              "name": "newDifficulty",
-              "type": "u8"
-            }
-          ]
-        ],
-        "packet_edit_book": [
-          "container",
-          [
-            {
-              "name": "new_book",
-              "type": "slot"
-            },
-            {
-              "name": "signing",
-              "type": "bool"
-            },
-            {
-              "name": "hand",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_query_entity_nbt": [
-          "container",
-          [
-            {
-              "name": "transactionId",
-              "type": "varint"
-            },
-            {
-              "name": "entityId",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_pick_item": [
-          "container",
-          [
-            {
-              "name": "slot",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_name_item": [
-          "container",
-          [
-            {
-              "name": "name",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_select_trade": [
-          "container",
-          [
-            {
-              "name": "slot",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_set_beacon_effect": [
-          "container",
-          [
-            {
-              "name": "primary_effect",
-              "type": "varint"
-            },
-            {
-              "name": "secondary_effect",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_update_command_block": [
-          "container",
-          [
-            {
-              "name": "location",
-              "type": "position"
-            },
-            {
-              "name": "command",
-              "type": "string"
-            },
-            {
-              "name": "mode",
-              "type": "varint"
-            },
-            {
-              "name": "flags",
-              "type": "u8"
-            }
-          ]
-        ],
-        "packet_update_command_block_minecart": [
-          "container",
-          [
-            {
-              "name": "entityId",
-              "type": "varint"
-            },
-            {
-              "name": "command",
-              "type": "string"
-            }
-          ,
-            {
-              "name": "track_output",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_update_structure_block": [
-          "container",
-          [
-            {
-              "name": "location",
-              "type": "position"
-            },
-            {
-              "name": "action",
-              "type": "varint"
-            },
-            {
-              "name": "mode",
-              "type": "varint"
-            },
-            {
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "name": "offset_x",
-              "type": "i8"
-            },
-            {
-              "name": "offset_y",
-              "type": "i8"
-            },
-            {
-              "name": "offset_z",
-              "type": "i8"
-            },
-            {
-              "name": "size_x",
-              "type": "i8"
-            },
-            {
-              "name": "size_y",
-              "type": "i8"
-            },
-            {
-              "name": "size_z",
-              "type": "i8"
-            },
-            {
-              "name": "mirror",
-              "type": "varint"
-            },
-            {
-              "name": "rotation",
-              "type": "varint"
-            },
-            {
-              "name": "metadata",
-              "type": "string"
-            },
-            {
-              "name": "integrity",
-              "type": "f32"
-            },
-            {
-              "name": "seed",
-              "type": "varlong"
-            },
-            {
-              "name": "flags",
-              "type": "u8"
-            }
-          ]
-        ],
-        "packet_tab_complete": [
-          "container",
-          [
-            {
-              "name": "transactionId",
-              "type": "varint"
-            },
-            {
-              "name": "text",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_chat": [
-          "container",
-          [
-            {
-              "name": "message",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_client_command": [
-          "container",
-          [
-            {
-              "name": "actionId",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_settings": [
-          "container",
-          [
-            {
-              "name": "locale",
-              "type": "string"
-            },
-            {
-              "name": "viewDistance",
-              "type": "i8"
-            },
-            {
-              "name": "chatFlags",
-              "type": "varint"
-            },
-            {
-              "name": "chatColors",
-              "type": "bool"
-            },
-            {
-              "name": "skinParts",
-              "type": "u8"
-            },
-            {
-              "name": "mainHand",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_transaction": [
-          "container",
-          [
-            {
-              "name": "windowId",
-              "type": "i8"
-            },
-            {
-              "name": "action",
-              "type": "i16"
-            },
-            {
-              "name": "accepted",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_enchant_item": [
-          "container",
-          [
-            {
-              "name": "windowId",
-              "type": "i8"
-            },
-            {
-              "name": "enchantment",
-              "type": "i8"
-            }
-          ]
-        ],
-        "packet_window_click": [
-          "container",
-          [
-            {
-              "name": "windowId",
-              "type": "u8"
-            },
-            {
-              "name": "slot",
-              "type": "i16"
-            },
-            {
-              "name": "mouseButton",
-              "type": "i8"
-            },
-            {
-              "name": "action",
-              "type": "i16"
-            },
-            {
-              "name": "mode",
-              "type": "i8"
-            },
-            {
-              "name": "item",
-              "type": "slot"
-            }
-          ]
-        ],
-        "packet_close_window": [
-          "container",
-          [
-            {
-              "name": "windowId",
-              "type": "u8"
-            }
-          ]
-        ],
-        "packet_custom_payload": [
-          "container",
-          [
-            {
-              "name": "channel",
-              "type": "string"
-            },
-            {
-              "name": "data",
-              "type": "restBuffer"
-            }
-          ]
-        ],
-        "packet_use_entity": [
-          "container",
-          [
-            {
-              "name": "target",
-              "type": "varint"
-            },
-            {
-              "name": "mouse",
-              "type": "varint"
-            },
-            {
-              "name": "x",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "mouse",
-                  "fields": {
-                    "2": "f32"
-                  },
-                  "default": "void"
-                }
-              ]
-            },
-            {
-              "name": "y",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "mouse",
-                  "fields": {
-                    "2": "f32"
-                  },
-                  "default": "void"
-                }
-              ]
-            },
-            {
-              "name": "z",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "mouse",
-                  "fields": {
-                    "2": "f32"
-                  },
-                  "default": "void"
-                }
-              ]
-            },
-            {
-              "name": "hand",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "mouse",
-                  "fields": {
-                    "0": "varint",
-                    "2": "varint"
-                  },
-                  "default": "void"
-                }
-              ]
-            },
-            {
-              "name": "sneaking",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_generate_structure": [
-          "container",
-          [
-            {
-              "name": "location",
-              "type": "position"
-            },
-            {
-              "name": "levels",
-              "type": "varint"
-            },
-            {
-              "name": "keepJigsaws",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_keep_alive": [
-          "container",
-          [
-            {
-              "name": "keepAliveId",
-              "type": "i64"
-            }
-          ]
-        ],
-        "packet_lock_difficulty": [
-          "container",
-          [
-            {
-              "name": "locked",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_position": [
-          "container",
-          [
-            {
-              "name": "x",
-              "type": "f64"
-            },
-            {
-              "name": "y",
-              "type": "f64"
-            },
-            {
-              "name": "z",
-              "type": "f64"
-            },
-            {
-              "name": "onGround",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_position_look": [
-          "container",
-          [
-            {
-              "name": "x",
-              "type": "f64"
-            },
-            {
-              "name": "y",
-              "type": "f64"
-            },
-            {
-              "name": "z",
-              "type": "f64"
-            },
-            {
-              "name": "yaw",
-              "type": "f32"
-            },
-            {
-              "name": "pitch",
-              "type": "f32"
-            },
-            {
-              "name": "onGround",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_look": [
-          "container",
-          [
-            {
-              "name": "yaw",
-              "type": "f32"
-            },
-            {
-              "name": "pitch",
-              "type": "f32"
-            },
-            {
-              "name": "onGround",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_flying": [
-          "container",
-          [
-            {
-              "name": "onGround",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_vehicle_move": [
-          "container",
-          [
-            {
-              "name": "x",
-              "type": "f64"
-            },
-            {
-              "name": "y",
-              "type": "f64"
-            },
-            {
-              "name": "z",
-              "type": "f64"
-            },
-            {
-              "name": "yaw",
-              "type": "f32"
-            },
-            {
-              "name": "pitch",
-              "type": "f32"
-            }
-          ]
-        ],
-        "packet_steer_boat": [
-          "container",
-          [
-            {
-              "name": "leftPaddle",
-              "type": "bool"
-            },
-            {
-              "name": "rightPaddle",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_craft_recipe_request": [
-          "container",
-          [
-            {
-              "name": "windowId",
-              "type": "i8"
-            },
-            {
-              "name": "recipe",
-              "type": "string"
-            },
-            {
-              "name": "makeAll",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_abilities": [
-          "container",
-          [
-            {
-              "name": "flags",
-              "type": "i8"
-            }
-          ]
-        ],
-        "packet_block_dig": [
-          "container",
-          [
-            {
-              "name": "status",
-              "type": "varint"
-            },
-            {
-              "name": "location",
-              "type": "position"
-            },
-            {
-              "name": "face",
-              "type": "i8"
-            }
-          ]
-        ],
-        "packet_entity_action": [
-          "container",
-          [
-            {
-              "name": "entityId",
-              "type": "varint"
-            },
-            {
-              "name": "actionId",
-              "type": "varint"
-            },
-            {
-              "name": "jumpBoost",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_steer_vehicle": [
-          "container",
-          [
-            {
-              "name": "sideways",
-              "type": "f32"
-            },
-            {
-              "name": "forward",
-              "type": "f32"
-            },
-            {
-              "name": "jump",
-              "type": "u8"
-            }
-          ]
-        ],
-        "packet_displayed_recipe": [
-          "container",
-          [
-            {
-              "name": "recipeId",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_recipe_book": [
-          "container",
-          [
-            {
-              "name": "bookId",
-              "type": "varint"
-            },
-            {
-              "name": "bookOpen",
-              "type": "bool"
-            },
-            {
-              "name": "filterActive",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_resource_pack_receive": [
-          "container",
-          [
-            {
-              "name": "result",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_held_item_slot": [
-          "container",
-          [
-            {
-              "name": "slotId",
-              "type": "i16"
-            }
-          ]
-        ],
-        "packet_set_creative_slot": [
-          "container",
-          [
-            {
-              "name": "slot",
-              "type": "i16"
-            },
-            {
-              "name": "item",
-              "type": "slot"
-            }
-          ]
-        ],
-        "packet_update_jigsaw_block": [
-          "container",
-          [
-            {
-              "name": "location",
-              "type": "position"
-            },
-            {
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "name": "target",
-              "type": "string"
-            },
-            {
-              "name": "pool",
-              "type": "string"
-            },
-            {
-              "name": "finalState",
-              "type": "string"
-            },
-            {
-              "name": "jointType",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_update_sign": [
-          "container",
-          [
-            {
-              "name": "location",
-              "type": "position"
-            },
-            {
-              "name": "text1",
-              "type": "string"
-            },
-            {
-              "name": "text2",
-              "type": "string"
-            },
-            {
-              "name": "text3",
-              "type": "string"
-            },
-            {
-              "name": "text4",
-              "type": "string"
-            }
-          ]
-        ],
-        "packet_arm_animation": [
-          "container",
-          [
-            {
-              "name": "hand",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_spectate": [
-          "container",
-          [
-            {
-              "name": "target",
-              "type": "UUID"
-            }
-          ]
-        ],
-        "packet_block_place": [
-          "container",
-          [
-            {
-              "name": "hand",
-              "type": "varint"
-            },
-            {
-              "name": "location",
-              "type": "position"
-            },
-            {
-              "name": "direction",
-              "type": "varint"
-            },
-            {
-              "name": "cursorX",
-              "type": "f32"
-            },
-            {
-              "name": "cursorY",
-              "type": "f32"
-            },
-            {
-              "name": "cursorZ",
-              "type": "f32"
-            },
-            {
-              "name": "insideBlock",
-              "type": "bool"
-            }
-          ]
-        ],
-        "packet_use_item": [
-          "container",
-          [
-            {
-              "name": "hand",
-              "type": "varint"
-            }
-          ]
-        ],
-        "packet_advancement_tab": [
-          "container",
-          [
-            {
-              "name": "action",
-              "type": "varint"
-            },
-            {
-              "name": "tabId",
-              "type": [
-                "switch",
-                {
-                  "compareTo":"action",
-                  "fields": {
-                    "0": "string",
-                    "1": "void"
-                  }
-                }
-              ]
-            }
-          ]
-        ],
-        "packet": [
-          "container",
-          [
-            {
-              "name": "name",
-              "type": [
-                "mapper",
-                {
-                  "type": "varint",
-                  "mappings": {
-                    "0x00": "teleport_confirm",
-                    "0x01": "query_block_nbt",
-                    "0x02": "set_difficulty",
-                    "0x03": "chat",
-                    "0x04": "client_command",
-                    "0x05": "settings",
-                    "0x06": "tab_complete",
-                    "0x07": "transaction",
-                    "0x08": "enchant_item",
-                    "0x09": "window_click",
-                    "0x0a": "close_window",
-                    "0x0b": "custom_payload",
-                    "0x0c": "edit_book",
-                    "0x0d": "query_entity_nbt",
-                    "0x0e": "use_entity",
-                    "0x0f": "generate_structure",
-                    "0x10": "keep_alive",
-                    "0x11": "lock_difficulty",
-                    "0x12": "position",
-                    "0x13": "position_look",
-                    "0x14": "look",
-                    "0x15": "flying",
-                    "0x16": "vehicle_move",
-                    "0x17": "steer_boat",
-                    "0x18": "pick_item",
-                    "0x19": "craft_recipe_request",
-                    "0x1a": "abilities",
-                    "0x1b": "block_dig",
-                    "0x1c": "entity_action",
-                    "0x1d": "steer_vehicle",
-                    "0x1e": "recipe_book",
-                    "0x1f": "displayed_recipe",
-                    "0x20": "name_item",
-                    "0x21": "resource_pack_receive",
-                    "0x22": "advancement_tab",
-                    "0x23": "select_trade",
-                    "0x24": "set_beacon_effect",
-                    "0x25": "held_item_slot",
-                    "0x26": "update_command_block",
-                    "0x27": "update_command_block_minecart",
-                    "0x28": "set_creative_slot",
-                    "0x29": "update_jigsaw_block",
-                    "0x2a": "update_structure_block",
-                    "0x2b": "update_sign",
-                    "0x2c": "arm_animation",
-                    "0x2d": "spectate",
-                    "0x2e": "block_place",
-                    "0x2f": "use_item"
-                  }
-                }
-              ]
-            },
-            {
-              "name": "params",
-              "type": [
-                "switch",
-                {
-                  "compareTo": "name",
-                  "fields": {
-                    "teleport_confirm": "packet_teleport_confirm",
-                    "query_block_nbt": "packet_query_block_nbt",
-                    "set_difficulty": "packet_set_difficulty",
-                    "edit_book": "packet_edit_book",
-                    "query_entity_nbt": "packet_query_entity_nbt",
-                    "pick_item": "packet_pick_item",
-                    "name_item": "packet_name_item",
-                    "select_trade": "packet_select_trade",
-                    "set_beacon_effect": "packet_set_beacon_effect",
-                    "update_command_block": "packet_update_command_block",
-                    "update_command_block_minecart": "packet_update_command_block_minecart",
-                    "update_structure_block": "packet_update_structure_block",
-                    "tab_complete": "packet_tab_complete",
-                    "chat": "packet_chat",
-                    "client_command": "packet_client_command",
-                    "settings": "packet_settings",
-                    "transaction": "packet_transaction",
-                    "enchant_item": "packet_enchant_item",
-                    "window_click": "packet_window_click",
-                    "close_window": "packet_close_window",
-                    "custom_payload": "packet_custom_payload",
-                    "use_entity": "packet_use_entity",
-                    "generate_structure": "packet_generate_structure",
-                    "keep_alive": "packet_keep_alive",
-                    "lock_difficulty": "packet_lock_difficulty",
-                    "position": "packet_position",
-                    "position_look": "packet_position_look",
-                    "look": "packet_look",
-                    "flying": "packet_flying",
-                    "vehicle_move": "packet_vehicle_move",
-                    "steer_boat": "packet_steer_boat",
-                    "craft_recipe_request": "packet_craft_recipe_request",
-                    "abilities": "packet_abilities",
-                    "block_dig": "packet_block_dig",
-                    "entity_action": "packet_entity_action",
-                    "steer_vehicle": "packet_steer_vehicle",
-                    "displayed_recipe": "packet_displayed_recipe",
-                    "recipe_book": "packet_recipe_book",
-                    "resource_pack_receive": "packet_resource_pack_receive",
-                    "held_item_slot": "packet_held_item_slot",
-                    "set_creative_slot": "packet_set_creative_slot",
-                    "update_jigsaw_block": "packet_update_jigsaw_block",
-                    "update_sign": "packet_update_sign",
-                    "arm_animation": "packet_arm_animation",
-                    "spectate": "packet_spectate",
-                    "block_place": "packet_block_place",
-                    "use_item": "packet_use_item",
-                    "advancement_tab": "packet_advancement_tab"
-                  }
-                }
-              ]
-            }
-          ]
-        ]
-      }
-    }
-  }
+		"toServer": {
+			"types": {
+				"packet_teleport_confirm": [
+					"container",
+					[
+						{
+							"name": "teleportId",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_query_block_nbt": [
+					"container",
+					[
+						{
+							"name": "transactionId",
+							"type": "varint"
+						},
+						{
+							"name": "location",
+							"type": "position"
+						}
+					]
+				],
+				"packet_set_difficulty": [
+					"container",
+					[
+						{
+							"name": "newDifficulty",
+							"type": "u8"
+						}
+					]
+				],
+				"packet_edit_book": [
+					"container",
+					[
+						{
+							"name": "new_book",
+							"type": "slot"
+						},
+						{
+							"name": "signing",
+							"type": "bool"
+						},
+						{
+							"name": "hand",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_query_entity_nbt": [
+					"container",
+					[
+						{
+							"name": "transactionId",
+							"type": "varint"
+						},
+						{
+							"name": "entityId",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_pick_item": [
+					"container",
+					[
+						{
+							"name": "slot",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_name_item": [
+					"container",
+					[
+						{
+							"name": "name",
+							"type": "string"
+						}
+					]
+				],
+				"packet_select_trade": [
+					"container",
+					[
+						{
+							"name": "slot",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_set_beacon_effect": [
+					"container",
+					[
+						{
+							"name": "primary_effect",
+							"type": "varint"
+						},
+						{
+							"name": "secondary_effect",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_update_command_block": [
+					"container",
+					[
+						{
+							"name": "location",
+							"type": "position"
+						},
+						{
+							"name": "command",
+							"type": "string"
+						},
+						{
+							"name": "mode",
+							"type": "varint"
+						},
+						{
+							"name": "flags",
+							"type": "u8"
+						}
+					]
+				],
+				"packet_update_command_block_minecart": [
+					"container",
+					[
+						{
+							"name": "entityId",
+							"type": "varint"
+						},
+						{
+							"name": "command",
+							"type": "string"
+						},
+						{
+							"name": "track_output",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_update_structure_block": [
+					"container",
+					[
+						{
+							"name": "location",
+							"type": "position"
+						},
+						{
+							"name": "action",
+							"type": "varint"
+						},
+						{
+							"name": "mode",
+							"type": "varint"
+						},
+						{
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"name": "offset_x",
+							"type": "i8"
+						},
+						{
+							"name": "offset_y",
+							"type": "i8"
+						},
+						{
+							"name": "offset_z",
+							"type": "i8"
+						},
+						{
+							"name": "size_x",
+							"type": "i8"
+						},
+						{
+							"name": "size_y",
+							"type": "i8"
+						},
+						{
+							"name": "size_z",
+							"type": "i8"
+						},
+						{
+							"name": "mirror",
+							"type": "varint"
+						},
+						{
+							"name": "rotation",
+							"type": "varint"
+						},
+						{
+							"name": "metadata",
+							"type": "string"
+						},
+						{
+							"name": "integrity",
+							"type": "f32"
+						},
+						{
+							"name": "seed",
+							"type": "varlong"
+						},
+						{
+							"name": "flags",
+							"type": "u8"
+						}
+					]
+				],
+				"packet_tab_complete": [
+					"container",
+					[
+						{
+							"name": "transactionId",
+							"type": "varint"
+						},
+						{
+							"name": "text",
+							"type": "string"
+						}
+					]
+				],
+				"packet_chat": [
+					"container",
+					[
+						{
+							"name": "message",
+							"type": "string"
+						}
+					]
+				],
+				"packet_client_command": [
+					"container",
+					[
+						{
+							"name": "actionId",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_settings": [
+					"container",
+					[
+						{
+							"name": "locale",
+							"type": "string"
+						},
+						{
+							"name": "viewDistance",
+							"type": "i8"
+						},
+						{
+							"name": "chatFlags",
+							"type": "varint"
+						},
+						{
+							"name": "chatColors",
+							"type": "bool"
+						},
+						{
+							"name": "skinParts",
+							"type": "u8"
+						},
+						{
+							"name": "mainHand",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_transaction": [
+					"container",
+					[
+						{
+							"name": "windowId",
+							"type": "i8"
+						},
+						{
+							"name": "action",
+							"type": "i16"
+						},
+						{
+							"name": "accepted",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_enchant_item": [
+					"container",
+					[
+						{
+							"name": "windowId",
+							"type": "i8"
+						},
+						{
+							"name": "enchantment",
+							"type": "i8"
+						}
+					]
+				],
+				"packet_window_click": [
+					"container",
+					[
+						{
+							"name": "windowId",
+							"type": "u8"
+						},
+						{
+							"name": "slot",
+							"type": "i16"
+						},
+						{
+							"name": "mouseButton",
+							"type": "i8"
+						},
+						{
+							"name": "action",
+							"type": "i16"
+						},
+						{
+							"name": "mode",
+							"type": "i8"
+						},
+						{
+							"name": "item",
+							"type": "slot"
+						}
+					]
+				],
+				"packet_close_window": [
+					"container",
+					[
+						{
+							"name": "windowId",
+							"type": "u8"
+						}
+					]
+				],
+				"packet_custom_payload": [
+					"container",
+					[
+						{
+							"name": "channel",
+							"type": "string"
+						},
+						{
+							"name": "data",
+							"type": "restBuffer"
+						}
+					]
+				],
+				"packet_use_entity": [
+					"container",
+					[
+						{
+							"name": "target",
+							"type": "varint"
+						},
+						{
+							"name": "mouse",
+							"type": "varint"
+						},
+						{
+							"name": "x",
+							"type": [
+								"switch",
+								{
+									"compareTo": "mouse",
+									"fields": {
+										"2": "f32"
+									},
+									"default": "void"
+								}
+							]
+						},
+						{
+							"name": "y",
+							"type": [
+								"switch",
+								{
+									"compareTo": "mouse",
+									"fields": {
+										"2": "f32"
+									},
+									"default": "void"
+								}
+							]
+						},
+						{
+							"name": "z",
+							"type": [
+								"switch",
+								{
+									"compareTo": "mouse",
+									"fields": {
+										"2": "f32"
+									},
+									"default": "void"
+								}
+							]
+						},
+						{
+							"name": "hand",
+							"type": [
+								"switch",
+								{
+									"compareTo": "mouse",
+									"fields": {
+										"0": "varint",
+										"2": "varint"
+									},
+									"default": "void"
+								}
+							]
+						},
+						{
+							"name": "sneaking",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_generate_structure": [
+					"container",
+					[
+						{
+							"name": "location",
+							"type": "position"
+						},
+						{
+							"name": "levels",
+							"type": "varint"
+						},
+						{
+							"name": "keepJigsaws",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_keep_alive": [
+					"container",
+					[
+						{
+							"name": "keepAliveId",
+							"type": "i64"
+						}
+					]
+				],
+				"packet_lock_difficulty": [
+					"container",
+					[
+						{
+							"name": "locked",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_position": [
+					"container",
+					[
+						{
+							"name": "x",
+							"type": "f64"
+						},
+						{
+							"name": "y",
+							"type": "f64"
+						},
+						{
+							"name": "z",
+							"type": "f64"
+						},
+						{
+							"name": "onGround",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_position_look": [
+					"container",
+					[
+						{
+							"name": "x",
+							"type": "f64"
+						},
+						{
+							"name": "y",
+							"type": "f64"
+						},
+						{
+							"name": "z",
+							"type": "f64"
+						},
+						{
+							"name": "yaw",
+							"type": "f32"
+						},
+						{
+							"name": "pitch",
+							"type": "f32"
+						},
+						{
+							"name": "onGround",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_look": [
+					"container",
+					[
+						{
+							"name": "yaw",
+							"type": "f32"
+						},
+						{
+							"name": "pitch",
+							"type": "f32"
+						},
+						{
+							"name": "onGround",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_flying": [
+					"container",
+					[
+						{
+							"name": "onGround",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_vehicle_move": [
+					"container",
+					[
+						{
+							"name": "x",
+							"type": "f64"
+						},
+						{
+							"name": "y",
+							"type": "f64"
+						},
+						{
+							"name": "z",
+							"type": "f64"
+						},
+						{
+							"name": "yaw",
+							"type": "f32"
+						},
+						{
+							"name": "pitch",
+							"type": "f32"
+						}
+					]
+				],
+				"packet_steer_boat": [
+					"container",
+					[
+						{
+							"name": "leftPaddle",
+							"type": "bool"
+						},
+						{
+							"name": "rightPaddle",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_craft_recipe_request": [
+					"container",
+					[
+						{
+							"name": "windowId",
+							"type": "i8"
+						},
+						{
+							"name": "recipe",
+							"type": "string"
+						},
+						{
+							"name": "makeAll",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_abilities": [
+					"container",
+					[
+						{
+							"name": "flags",
+							"type": "i8"
+						}
+					]
+				],
+				"packet_block_dig": [
+					"container",
+					[
+						{
+							"name": "status",
+							"type": "varint"
+						},
+						{
+							"name": "location",
+							"type": "position"
+						},
+						{
+							"name": "face",
+							"type": "i8"
+						}
+					]
+				],
+				"packet_entity_action": [
+					"container",
+					[
+						{
+							"name": "entityId",
+							"type": "varint"
+						},
+						{
+							"name": "actionId",
+							"type": "varint"
+						},
+						{
+							"name": "jumpBoost",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_steer_vehicle": [
+					"container",
+					[
+						{
+							"name": "sideways",
+							"type": "f32"
+						},
+						{
+							"name": "forward",
+							"type": "f32"
+						},
+						{
+							"name": "jump",
+							"type": "u8"
+						}
+					]
+				],
+				"packet_displayed_recipe": [
+					"container",
+					[
+						{
+							"name": "recipeId",
+							"type": "string"
+						}
+					]
+				],
+				"packet_recipe_book": [
+					"container",
+					[
+						{
+							"name": "bookId",
+							"type": "varint"
+						},
+						{
+							"name": "bookOpen",
+							"type": "bool"
+						},
+						{
+							"name": "filterActive",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_resource_pack_receive": [
+					"container",
+					[
+						{
+							"name": "result",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_held_item_slot": [
+					"container",
+					[
+						{
+							"name": "slotId",
+							"type": "i16"
+						}
+					]
+				],
+				"packet_set_creative_slot": [
+					"container",
+					[
+						{
+							"name": "slot",
+							"type": "i16"
+						},
+						{
+							"name": "item",
+							"type": "slot"
+						}
+					]
+				],
+				"packet_update_jigsaw_block": [
+					"container",
+					[
+						{
+							"name": "location",
+							"type": "position"
+						},
+						{
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"name": "target",
+							"type": "string"
+						},
+						{
+							"name": "pool",
+							"type": "string"
+						},
+						{
+							"name": "finalState",
+							"type": "string"
+						},
+						{
+							"name": "jointType",
+							"type": "string"
+						}
+					]
+				],
+				"packet_update_sign": [
+					"container",
+					[
+						{
+							"name": "location",
+							"type": "position"
+						},
+						{
+							"name": "text1",
+							"type": "string"
+						},
+						{
+							"name": "text2",
+							"type": "string"
+						},
+						{
+							"name": "text3",
+							"type": "string"
+						},
+						{
+							"name": "text4",
+							"type": "string"
+						}
+					]
+				],
+				"packet_arm_animation": [
+					"container",
+					[
+						{
+							"name": "hand",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_spectate": [
+					"container",
+					[
+						{
+							"name": "target",
+							"type": "UUID"
+						}
+					]
+				],
+				"packet_block_place": [
+					"container",
+					[
+						{
+							"name": "hand",
+							"type": "varint"
+						},
+						{
+							"name": "location",
+							"type": "position"
+						},
+						{
+							"name": "direction",
+							"type": "varint"
+						},
+						{
+							"name": "cursorX",
+							"type": "f32"
+						},
+						{
+							"name": "cursorY",
+							"type": "f32"
+						},
+						{
+							"name": "cursorZ",
+							"type": "f32"
+						},
+						{
+							"name": "insideBlock",
+							"type": "bool"
+						}
+					]
+				],
+				"packet_use_item": [
+					"container",
+					[
+						{
+							"name": "hand",
+							"type": "varint"
+						}
+					]
+				],
+				"packet_advancement_tab": [
+					"container",
+					[
+						{
+							"name": "action",
+							"type": "varint"
+						},
+						{
+							"name": "tabId",
+							"type": [
+								"switch",
+								{
+									"compareTo": "action",
+									"fields": {
+										"0": "string",
+										"1": "void"
+									}
+								}
+							]
+						}
+					]
+				],
+				"packet": [
+					"container",
+					[
+						{
+							"name": "name",
+							"type": [
+								"mapper",
+								{
+									"type": "varint",
+									"mappings": {
+										"0x00": "teleport_confirm",
+										"0x01": "query_block_nbt",
+										"0x02": "set_difficulty",
+										"0x03": "chat",
+										"0x04": "client_command",
+										"0x05": "settings",
+										"0x06": "tab_complete",
+										"0x07": "transaction",
+										"0x08": "enchant_item",
+										"0x09": "window_click",
+										"0x0a": "close_window",
+										"0x0b": "custom_payload",
+										"0x0c": "edit_book",
+										"0x0d": "query_entity_nbt",
+										"0x0e": "use_entity",
+										"0x0f": "generate_structure",
+										"0x10": "keep_alive",
+										"0x11": "lock_difficulty",
+										"0x12": "position",
+										"0x13": "position_look",
+										"0x14": "look",
+										"0x15": "flying",
+										"0x16": "vehicle_move",
+										"0x17": "steer_boat",
+										"0x18": "pick_item",
+										"0x19": "craft_recipe_request",
+										"0x1a": "abilities",
+										"0x1b": "block_dig",
+										"0x1c": "entity_action",
+										"0x1d": "steer_vehicle",
+										"0x1e": "recipe_book",
+										"0x1f": "displayed_recipe",
+										"0x20": "name_item",
+										"0x21": "resource_pack_receive",
+										"0x22": "advancement_tab",
+										"0x23": "select_trade",
+										"0x24": "set_beacon_effect",
+										"0x25": "held_item_slot",
+										"0x26": "update_command_block",
+										"0x27": "update_command_block_minecart",
+										"0x28": "set_creative_slot",
+										"0x29": "update_jigsaw_block",
+										"0x2a": "update_structure_block",
+										"0x2b": "update_sign",
+										"0x2c": "arm_animation",
+										"0x2d": "spectate",
+										"0x2e": "block_place",
+										"0x2f": "use_item"
+									}
+								}
+							]
+						},
+						{
+							"name": "params",
+							"type": [
+								"switch",
+								{
+									"compareTo": "name",
+									"fields": {
+										"teleport_confirm": "packet_teleport_confirm",
+										"query_block_nbt": "packet_query_block_nbt",
+										"set_difficulty": "packet_set_difficulty",
+										"edit_book": "packet_edit_book",
+										"query_entity_nbt": "packet_query_entity_nbt",
+										"pick_item": "packet_pick_item",
+										"name_item": "packet_name_item",
+										"select_trade": "packet_select_trade",
+										"set_beacon_effect": "packet_set_beacon_effect",
+										"update_command_block": "packet_update_command_block",
+										"update_command_block_minecart": "packet_update_command_block_minecart",
+										"update_structure_block": "packet_update_structure_block",
+										"tab_complete": "packet_tab_complete",
+										"chat": "packet_chat",
+										"client_command": "packet_client_command",
+										"settings": "packet_settings",
+										"transaction": "packet_transaction",
+										"enchant_item": "packet_enchant_item",
+										"window_click": "packet_window_click",
+										"close_window": "packet_close_window",
+										"custom_payload": "packet_custom_payload",
+										"use_entity": "packet_use_entity",
+										"generate_structure": "packet_generate_structure",
+										"keep_alive": "packet_keep_alive",
+										"lock_difficulty": "packet_lock_difficulty",
+										"position": "packet_position",
+										"position_look": "packet_position_look",
+										"look": "packet_look",
+										"flying": "packet_flying",
+										"vehicle_move": "packet_vehicle_move",
+										"steer_boat": "packet_steer_boat",
+										"craft_recipe_request": "packet_craft_recipe_request",
+										"abilities": "packet_abilities",
+										"block_dig": "packet_block_dig",
+										"entity_action": "packet_entity_action",
+										"steer_vehicle": "packet_steer_vehicle",
+										"displayed_recipe": "packet_displayed_recipe",
+										"recipe_book": "packet_recipe_book",
+										"resource_pack_receive": "packet_resource_pack_receive",
+										"held_item_slot": "packet_held_item_slot",
+										"set_creative_slot": "packet_set_creative_slot",
+										"update_jigsaw_block": "packet_update_jigsaw_block",
+										"update_sign": "packet_update_sign",
+										"arm_animation": "packet_arm_animation",
+										"spectate": "packet_spectate",
+										"block_place": "packet_block_place",
+										"use_item": "packet_use_item",
+										"advancement_tab": "packet_advancement_tab"
+									}
+								}
+							]
+						}
+					]
+				]
+			}
+		}
+	}
 }

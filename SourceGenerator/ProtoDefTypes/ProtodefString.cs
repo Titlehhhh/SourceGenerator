@@ -1,10 +1,12 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefString : ProtodefType
+	public sealed class ProtodefString : ProtodefType
 	{
-		public ProtodefString(JToken token)
-		{
+		public ProtodefType CountType { get; }
 
+		public ProtodefString(ProtodefType countType)
+		{
+			CountType = countType;
 		}
 	}
 

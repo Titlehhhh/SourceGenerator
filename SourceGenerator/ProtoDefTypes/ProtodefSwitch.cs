@@ -1,6 +1,6 @@
 ﻿namespace SourceGenerator.ProtoDefTypes
 {
-	public class ProtodefSwitch : ProtodefType
+	public sealed class ProtodefSwitch : ProtodefType
 	{
 
 
