@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace SourceGenerator.ProtoDefTypes.Converters
@@ -32,27 +33,55 @@ namespace SourceGenerator.ProtoDefTypes.Converters
 			{
 				reader.Read();
 				string name = reader.GetString();
-				reader.Read();
-				ProtodefType result = name switch
-				{
-					"container" => JsonSerializer.Deserialize<ProtodefContainer>(ref reader, options),
-					"bitfield" => JsonSerializer.Deserialize<ProtodefBitField>(ref reader, options),
-					"buffer" => JsonSerializer.Deserialize<ProtodefBuffer>(ref reader, options),
-					"mapper" => JsonSerializer.Deserialize<ProtodefMapper>(ref reader, options),
-					"array" => JsonSerializer.Deserialize<ProtodefArray>(ref reader, options),
-					"option" => JsonSerializer.Deserialize<ProtodefOption>(ref reader, options),
-					"pstring" => JsonSerializer.Deserialize<ProtodefString>(ref reader, options),
-					_ => throw new NotSupportedException($"Unknown type: {name}")
-				};
-				while (reader.TokenType != JsonTokenType.EndArray)
-					reader.Read();
 
-				return result;
+
+
+
+				//else
+				reader.Read();
+				try
+				{
+					ProtodefType? result = name switch
+					{
+						"container" => new ProtodefContainer(JsonSerializer.Deserialize<List<ProtodefContainerField>>(ref reader, options)),
+						"bitfield" => new ProtodefBitField(JsonSerializer.Deserialize<List<ProtodefBitFieldNode>>(ref reader, options)),
+						"buffer" => JsonSerializer.Deserialize<ProtodefBuffer>(ref reader, options),
+						"mapper" => JsonSerializer.Deserialize<ProtodefMapper>(ref reader, options),
+						"array" => JsonSerializer.Deserialize<ProtodefArray>(ref reader, options),
+						"option" => new ProtodefOption(JsonSerializer.Deserialize<ProtodefType>(ref reader, options)),
+						"pstring" => JsonSerializer.Deserialize<ProtodefString>(ref reader, options),
+						"switch" => JsonSerializer.Deserialize<ProtodefSwitch>(ref reader, options),
+						//"topBitSetTerminatedArray" => JsonSerializer.Deserialize(),
+						_ => ReadUnknownType(ref reader, options, name)
+					};
+					reader.Read();
+					//while (reader.Read()) ;
+
+					return result;
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("name: " + name);
+					Console.WriteLine("Error deserialize: " + ex);
+					throw;
+				}
 			}
 			else
 			{
 				throw new JsonException();
 			}
+		}
+
+		private ProtodefType? ReadUnknownType(ref Utf8JsonReader reader, JsonSerializerOptions options, string name)
+		{
+			var doc = JsonDocument.ParseValue(ref reader);
+			var h = doc.RootElement.Deserialize<ProtodefSwitch>(options);
+			if (h is not null)
+			{
+				h.Owner = name;
+				return h;
+			}
+			throw new NotSupportedException($"Unknown type: {name}");
 		}
 
 		private ProtodefNumericType? GetNumber(string name)

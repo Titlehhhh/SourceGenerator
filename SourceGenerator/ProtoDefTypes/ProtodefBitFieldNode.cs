@@ -1,17 +1,16 @@
-﻿namespace SourceGenerator.ProtoDefTypes
+﻿using System.Text.Json.Serialization;
+
+namespace SourceGenerator.ProtoDefTypes
 {
 	public sealed class ProtodefBitFieldNode
 	{
-		public ProtodefBitFieldNode(string name, int size, bool signed)
-		{
-			Name = name;
-			Size = size;
-			Signed = signed;
-		}
 
-		public string Name { get; }
-		public int Size { get; }
-		public bool Signed { get; }
+		[JsonPropertyName("name")]
+		public string Name { get; set; }
+		[JsonPropertyName("size")]
+		public int Size { get; set; }
+		[JsonPropertyName("signed")]
+		public bool Signed { get; set; }
 	}
 
 

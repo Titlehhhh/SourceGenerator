@@ -1,15 +1,20 @@
-﻿namespace SourceGenerator.ProtoDefTypes
+﻿using System.Text.Json.Serialization;
+
+namespace SourceGenerator.ProtoDefTypes
 {
 	public sealed class ProtodefMapper : ProtodefType
 	{
-		public ProtodefMapper(ProtodefType type, Dictionary<string, ProtodefType> mappings)
+		[JsonConstructor]
+		public ProtodefMapper(string type, Dictionary<string, string> mappings)
 		{
 			Type = type;
 			Mappings = mappings;
 		}
 
-		public ProtodefType Type { get; private set; }
-		public Dictionary<string, ProtodefType> Mappings { get; private set; } = new();
+		[JsonPropertyName("type")]
+		public string Type { get; private set; }
+		[JsonPropertyName("mappings")]
+		public Dictionary<string, string> Mappings { get; private set; } = new();
 	}
 
 

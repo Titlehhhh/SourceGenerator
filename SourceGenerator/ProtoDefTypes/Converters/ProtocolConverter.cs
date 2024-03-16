@@ -30,8 +30,7 @@ namespace SourceGenerator.ProtoDefTypes.Converters
 
 									string typeName = reader.GetString();
 
-									if (typeName == "optionalNbt")
-										Debugger.Break();
+									
 
 									types[typeName] = JsonSerializer.Deserialize<ProtodefType>(ref reader, options);
 								}
@@ -44,7 +43,7 @@ namespace SourceGenerator.ProtoDefTypes.Converters
 						}
 						else
 						{
-							namespaces[name] = JsonSerializer.Deserialize<Namespace>(ref reader, options);
+							//namespaces[name] = JsonSerializer.Deserialize<Namespace>(ref reader, options);
 						}
 					}
 

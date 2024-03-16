@@ -1,9 +1,11 @@
-﻿namespace SourceGenerator.ProtoDefTypes
+﻿using System.Text.Json.Serialization;
+
+namespace SourceGenerator.ProtoDefTypes
 {
 	public sealed class ProtodefContainerField
 	{
 
-
+		[JsonConstructor]
 		public ProtodefContainerField(bool? anon, string? name, ProtodefType type)
 		{
 			Anon = anon;
@@ -13,8 +15,11 @@
 
 		//public bool IsAnon => Anon;
 
+		[JsonPropertyName("anon")]
 		public bool? Anon { get; }
+		[JsonPropertyName("name")]
 		public string? Name { get; }
+		[JsonPropertyName("type")]
 		public ProtodefType Type { get; }
 	}
 

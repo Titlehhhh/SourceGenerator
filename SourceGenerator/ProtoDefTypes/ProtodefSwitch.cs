@@ -1,25 +1,26 @@
-﻿namespace SourceGenerator.ProtoDefTypes
+﻿using System.Text.Json.Serialization;
+
+namespace SourceGenerator.ProtoDefTypes
 {
 	public sealed class ProtodefSwitch : ProtodefType
 	{
 
 
-		public ProtodefSwitch(string compareTo, string? compareToValue, Dictionary<string, ProtodefType> fields, string? @default)
-		{
-			CompareTo = compareTo;
-			CompareToValue = compareToValue;
-			Fields = fields;
-			Default = @default;
-		}
+		[JsonIgnore]
+		public string? Owner { get; set; }
 
 		//TODO path parser
-		public string CompareTo { get; }
+		[JsonPropertyName("compareTo")]
+		public string CompareTo { get; set; }
 
-		public string? CompareToValue { get; }
+		[JsonPropertyName("compareToValue")]
+		public string? CompareToValue { get; set; }
 
-		public Dictionary<string, ProtodefType> Fields { get; } = new();
+		[JsonPropertyName("fields")]
+		public Dictionary<string, ProtodefType> Fields { get; set; } = new();
 
-		public string? Default { get; }
+		[JsonPropertyName("default")]
+		public ProtodefType? Default { get; set; }
 	}
 
 
