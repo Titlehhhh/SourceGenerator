@@ -23,22 +23,21 @@ namespace SourceGenerator.ProtoDefTypes.Converters
 						{
 							if (reader.TokenType == JsonTokenType.PropertyName)
 							{
-								while (reader.Read() && (reader.TokenType != JsonTokenType.EndObject))
+								if (reader.Read())
 								{
+
+
 									if (reader.TokenType == JsonTokenType.StartObject)
-										reader.Read();
+									{
 
-									string typeName = reader.GetString();
 
-									
 
-									types[typeName] = JsonSerializer.Deserialize<ProtodefType>(ref reader, options);
+										types = JsonSerializer.Deserialize<Dictionary<string, ProtodefType>>(ref reader, options);
+
+									}
 								}
 
-							}
-							else
-							{
-								Console.WriteLine("GG");
+
 							}
 						}
 						else
@@ -48,7 +47,7 @@ namespace SourceGenerator.ProtoDefTypes.Converters
 					}
 
 				}
-				return new Protocol();
+				return new Protocol(namespaces, types);
 			}
 			else
 			{

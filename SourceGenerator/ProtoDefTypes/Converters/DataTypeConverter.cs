@@ -51,7 +51,7 @@ namespace SourceGenerator.ProtoDefTypes.Converters
 						"option" => new ProtodefOption(JsonSerializer.Deserialize<ProtodefType>(ref reader, options)),
 						"pstring" => JsonSerializer.Deserialize<ProtodefString>(ref reader, options),
 						"switch" => JsonSerializer.Deserialize<ProtodefSwitch>(ref reader, options),
-						//"topBitSetTerminatedArray" => JsonSerializer.Deserialize(),
+						"topBitSetTerminatedArray" => JsonSerializer.Deserialize<ProtodefTopBitSetTerminatedArray>(ref reader, options),
 						_ => ReadUnknownType(ref reader, options, name)
 					};
 					reader.Read();
@@ -75,12 +75,29 @@ namespace SourceGenerator.ProtoDefTypes.Converters
 		private ProtodefType? ReadUnknownType(ref Utf8JsonReader reader, JsonSerializerOptions options, string name)
 		{
 			var doc = JsonDocument.ParseValue(ref reader);
-			var h = doc.RootElement.Deserialize<ProtodefSwitch>(options);
-			if (h is not null)
+			var original = doc.RootElement.Clone();
+
+			var obj = original.EnumerateObject();
+			if (obj.Count() == 1)
 			{
-				h.Owner = name;
-				return h;
+				var compareTo = obj.First(x => x.NameEquals("compareTo"));
+				return new ProtodefSwitch
+				{
+					Owner = name,
+					CompareTo = compareTo.Value.GetString()
+				};
 			}
+
+			var loop = doc.Deserialize<ProtodefLoop>(options);
+
+			if (loop.Type is null)
+			{
+				throw new Exception("is not loop");
+			}
+
+			return loop;
+
+
 			throw new NotSupportedException($"Unknown type: {name}");
 		}
 

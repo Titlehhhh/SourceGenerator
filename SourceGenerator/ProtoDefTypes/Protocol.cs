@@ -5,8 +5,15 @@
 	{
 		public Dictionary<string, Namespace> Namespaces { get; set; }
 
-
+		
 		public Dictionary<string, ProtodefType> Types { get; set; }
+
+		public Protocol(Dictionary<string, Namespace> namespaces, Dictionary<string, ProtodefType> types)
+		{
+			Namespaces = namespaces;
+			Types = types;
+		}
+
 
 
 
