@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace SourceGenerator.ProtoDefTypes.Converters
@@ -74,7 +73,7 @@ namespace SourceGenerator.ProtoDefTypes.Converters
 
 		private ProtodefType? ReadUnknownType(ref Utf8JsonReader reader, JsonSerializerOptions options, string name)
 		{
-			var doc = JsonDocument.ParseValue(ref reader);
+			using var doc = JsonDocument.ParseValue(ref reader);
 			var original = doc.RootElement.Clone();
 
 			var obj = original.EnumerateObject();

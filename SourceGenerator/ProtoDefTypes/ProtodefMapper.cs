@@ -17,7 +17,7 @@ namespace SourceGenerator.ProtoDefTypes
 		public Dictionary<string, string> Mappings { get; private set; } = new();
 	}
 
-	
+
 
 
 }

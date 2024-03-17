@@ -1,5 +1,4 @@
-﻿using SourceGenerator.ProtoDefTypes.Converters;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace SourceGenerator.ProtoDefTypes
 {
@@ -14,17 +13,12 @@ namespace SourceGenerator.ProtoDefTypes
 
 		public Protocol Parse()
 		{
-			JsonSerializerOptions options = new();
+			//JsonSerializerOptions options = new();
 
-			options.Converters.Add(new ProtocolConverter());
-			
-			
-			
-			options.Converters.Add(new NamespaceConverter());
-			options.Converters.Add(new DataTypeConverter());
+			//options.Converters.Add(new DataTypeConverter());
 
 
-			return JsonSerializer.Deserialize<Protocol>(json, options);
+			return JsonSerializer.Deserialize<Protocol>(json);
 		}
 	}
 }

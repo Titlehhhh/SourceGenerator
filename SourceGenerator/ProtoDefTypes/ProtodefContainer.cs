@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace SourceGenerator.ProtoDefTypes
 {
-	
+
 	public sealed class ProtodefContainer : ProtodefType, IEnumerable<ProtodefContainerField>
 	{
 		private readonly List<ProtodefContainerField> fields = new();
